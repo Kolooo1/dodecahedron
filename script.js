@@ -275,6 +275,7 @@ function initLanguageToggle() {
             historyLink: 'История',
             calculatorLink: 'Калькулятор',
             problemsLink: 'Задачи',
+            logoText: 'Додекаэдр',
             
             // Сплеш экран
             splashTitle: 'Додекаэдр',
@@ -297,7 +298,7 @@ function initLanguageToggle() {
             historyText2: 'Архимед, Евклид и другие древнегреческие математики изучали свойства додекаэдра и включали его в свои труды. В эпоху Возрождения художники и учёные, такие как Леонардо да Винчи и Кеплер, были очарованы его симметрией.',
             historySubtitle3: 'Современное значение',
             historyText3: 'Сегодня додекаэдр нашёл применение в различных областях: от кристаллографии до молекулярной биологии. Некоторые вирусы имеют додекаэдрическую форму. В популярной культуре додекаэдр известен как 12-гранный игральный кубик (D12) в настольных играх.',
-            imageCaption: 'Классическое изображение додекаэдра',
+            imageCaption: 'Римский бронзовый додекаэдр (I-II век н.э.)',
             
             // Секция калькулятора
             calculatorTitle: 'Калькулятор свойств додекаэдра',
@@ -325,6 +326,8 @@ function initLanguageToggle() {
             aboutText: 'Этот сайт создан для изучения додекаэдра и его математических свойств.',
             navigationTitle: 'Навигация',
             resourcesTitle: 'Ресурсы',
+            wikipediaLink: 'Википедия',
+            mathworldLink: 'Wolfram MathWorld',
             
             // Страница задач
             problemsTitle: 'Задачи по додекаэдру',
@@ -348,6 +351,7 @@ function initLanguageToggle() {
             historyLink: 'History',
             calculatorLink: 'Calculator',
             problemsLink: 'Problems',
+            logoText: 'Dodecahedron',
             
             // Splash screen
             splashTitle: 'Dodecahedron',
@@ -370,7 +374,7 @@ function initLanguageToggle() {
             historyText2: 'Archimedes, Euclid, and other ancient Greek mathematicians studied the properties of the dodecahedron and included it in their works. During the Renaissance, artists and scientists like Leonardo da Vinci and Kepler were fascinated by its symmetry.',
             historySubtitle3: 'Modern significance',
             historyText3: 'Today, the dodecahedron has found applications in various fields: from crystallography to molecular biology. Some viruses have a dodecahedral shape. In popular culture, the dodecahedron is known as a 12-sided die (D12) in tabletop games.',
-            imageCaption: 'Classical depiction of a dodecahedron',
+            imageCaption: 'Roman bronze dodecahedron (1st-2nd century CE)',
             
             // Calculator section
             calculatorTitle: 'Dodecahedron Properties Calculator',
@@ -398,6 +402,8 @@ function initLanguageToggle() {
             aboutText: 'This website was created to study the dodecahedron and its mathematical properties.',
             navigationTitle: 'Navigation',
             resourcesTitle: 'Resources',
+            wikipediaLink: 'Wikipedia',
+            mathworldLink: 'Wolfram MathWorld',
             
             // Problems page
             problemsTitle: 'Dodecahedron Problems',
@@ -439,7 +445,8 @@ function initLanguageToggle() {
             modelLink: document.querySelector('nav ul li:nth-child(1) a'),
             historyLink: document.querySelector('nav ul li:nth-child(2) a'),
             calculatorLink: document.querySelector('nav ul li:nth-child(3) a'),
-            problemsLink: document.querySelector('nav ul li:nth-child(4) a')
+            problemsLink: document.querySelector('nav ul li:nth-child(4) a'),
+            logoText: document.querySelector('.logo span')
         };
         
         // Секция героя
@@ -491,7 +498,9 @@ function initLanguageToggle() {
             aboutProject: document.querySelector('.footer-section:nth-child(1) h3'),
             aboutText: document.querySelector('.footer-section:nth-child(1) p'),
             navigationTitle: document.querySelector('.footer-section:nth-child(2) h3'),
-            resourcesTitle: document.querySelector('.footer-section:nth-child(3) h3')
+            resourcesTitle: document.querySelector('.footer-section:nth-child(3) h3'),
+            wikipediaLink: document.querySelector('.footer-section:nth-child(3) ul li:nth-child(1) a'),
+            mathworldLink: document.querySelector('.footer-section:nth-child(3) ul li:nth-child(2) a')
         };
         
         // Объединяем все элементы для упрощения перебора
@@ -586,6 +595,27 @@ function initLanguageToggle() {
                 enterNumber: translations[language].enterNumber
             };
         }
+
+        // Для футера, важно обновить все ссылки в навигационном разделе
+        const footerNavigationLinks = document.querySelectorAll('.footer-section:nth-child(2) ul li a');
+        if (footerNavigationLinks.length > 0) {
+            footerNavigationLinks.forEach((link, index) => {
+                switch(index) {
+                    case 0:
+                        link.textContent = translations[language].modelLink;
+                        break;
+                    case 1:
+                        link.textContent = translations[language].historyLink;
+                        break;
+                    case 2:
+                        link.textContent = translations[language].calculatorLink;
+                        break;
+                    case 3:
+                        link.textContent = translations[language].problemsLink;
+                        break;
+                }
+            });
+        }
     }
     
     // Добавляем обработчик клика по кнопке переключения языка
@@ -625,12 +655,53 @@ function setupSplashScreen() {
     // После скрытия сплеш-экрана восстанавливаем скролл
     setTimeout(() => {
         document.body.style.overflow = '';
-    }, 3000); // Задержка немного больше, чем анимация сплеш-экрана
+    }, 1500); // Задержка немного больше, чем анимация сплеш-экрана
+}
+
+/**
+ * Функционал скрытия верхней навигации при прокрутке вниз
+ */
+function initScrollHeader() {
+    let lastScroll = 0;
+    const header = document.querySelector('header');
+    const scrollThreshold = 100; // Порог прокрутки для начала скрытия
+    
+    // Добавляем атрибут для начальной высоты хедера
+    const headerHeight = header.offsetHeight;
+    document.documentElement.style.setProperty('--header-height', `${headerHeight}px`);
+    
+    window.addEventListener('scroll', () => {
+        const currentScroll = window.pageYOffset;
+        
+        // Если прокручено меньше порогового значения, показываем хедер
+        if (currentScroll <= scrollThreshold) {
+            header.style.transform = 'translateY(0)';
+            return;
+        }
+        
+        // Если скролл вниз - скрываем хедер
+        if (currentScroll > lastScroll && !header.classList.contains('scrolled-down')) {
+            header.style.transform = `translateY(-${headerHeight}px)`;
+            header.classList.add('scrolled-down');
+            header.classList.remove('scrolled-up');
+        } 
+        // Если скролл вверх - показываем хедер
+        else if (currentScroll < lastScroll && header.classList.contains('scrolled-down')) {
+            header.style.transform = 'translateY(0)';
+            header.classList.remove('scrolled-down');
+            header.classList.add('scrolled-up');
+        }
+        
+        lastScroll = currentScroll;
+    });
 }
 
 // Добавляем и обрабатываем события страницы
 document.addEventListener('DOMContentLoaded', function() {
     setupSplashScreen();
+    
+    // Инициализация скрытия хедера при скролле
+    initScrollHeader();
     
     // Инициализация переключателя темы
     initThemeToggle();
