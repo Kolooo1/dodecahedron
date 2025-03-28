@@ -19,7 +19,7 @@ const problemAnswers = {
     1: 957.89, // Объем додекаэдра с ребром 5 см
     2: 185.81, // Площадь поверхности додекаэдра с ребром 3 см
     3: 2.38, // Радиус вписанной сферы додекаэдра с ребром 4 см
-    4: 7.21, // Длина ребра додекаэдра с описанной сферой радиуса 10 см
+    4: 7.14, // Длина ребра додекаэдра с описанной сферой радиуса 10 см
     5: 116.57, // Двугранный угол додекаэдра в градусах
     6: 755.2 // Объем додекаэдра вписанного в куб объемом 1000 см³
 };
@@ -340,8 +340,9 @@ function initLanguageToggle() {
             mathworldLink: 'Wolfram MathWorld',
             
             // Страница задач
-            problemsTitle: 'Задачи по додекаэдру',
-            problemsSubtitle: 'Проверьте свои знания и навыки',
+            problemsTitle: 'Математические задачи о додекаэдре',
+            problemsSubtitle: 'Проверьте свои знания и навыки с помощью этих увлекательных задач!',
+            difficultyTitle: 'Сложность:',
             difficultyAll: 'Все',
             difficultyEasy: 'Легкие',
             difficultyMedium: 'Средние',
@@ -354,6 +355,32 @@ function initLanguageToggle() {
             correctAnswer: 'Правильно! Отличная работа.',
             incorrectAnswer: 'Неправильно. Попробуйте еще раз.',
             enterNumber: 'Пожалуйста, введите число.',
+            problems: {
+                1: {
+                    text: 'Найдите объем додекаэдра, если длина его ребра равна 5 см.',
+                    hint: 'Подсказка: Используйте формулу \(V = \frac{15 + 7\sqrt{5}}{4} \times a^3\), где \(a\) - длина ребра.'
+                },
+                2: {
+                    text: 'Найдите площадь поверхности додекаэдра с ребром длиной 3 см.',
+                    hint: 'Подсказка: Используйте формулу \(S = 3\sqrt{25 + 10\sqrt{5}} \times a^2\), где \(a\) - длина ребра.'
+                },
+                3: {
+                    text: 'Найдите радиус вписанной сферы додекаэдра с ребром 4 см.',
+                    hint: 'Подсказка: Радиус вписанной сферы \(r = a \times \frac{\sqrt{75 + 30\sqrt{5}}}{20}\), где \(a\) - длина ребра.'
+                },
+                4: {
+                    text: 'Для додекаэдра с радиусом описанной сферы 10 см найдите длину его ребра.',
+                    hint: 'Подсказка: Радиус описанной сферы \(R = a\sqrt{3} \times \frac{1 + \sqrt{5}}{4}\), где \(a\) - длина ребра. Выразите \(a\) из этой формулы.'
+                },
+                5: {
+                    text: 'Вычислите двугранный угол додекаэдра (угол между соседними гранями).',
+                    hint: 'Подсказка: Двугранный угол додекаэдра не зависит от размера и равен \(\cos^{-1}(-\frac{1}{\sqrt{5}})\).'
+                },
+                6: {
+                    text: 'Додекаэдр вписан в куб так, что каждая вершина додекаэдра лежит на одной из граней куба. Если объем куба равен 1000 см³, найдите объем додекаэдра.',
+                    hint: 'Подсказка: Это сложная геометрическая задача. Вам нужно найти отношение объемов додекаэдра и куба в такой конфигурации.'
+                }
+            },
             
             // Модальное окно достижения
             achievementTitle: 'Вы стали Мастером Додекаэдра!',
@@ -421,8 +448,9 @@ function initLanguageToggle() {
             mathworldLink: 'Wolfram MathWorld',
             
             // Problems page
-            problemsTitle: 'Dodecahedron Problems',
-            problemsSubtitle: 'Test your knowledge and skills',
+            problemsTitle: 'Mathematical Problems about Dodecahedron',
+            problemsSubtitle: 'Test your knowledge and skills with these exciting problems!',
+            difficultyTitle: 'Difficulty:',
             difficultyAll: 'All',
             difficultyEasy: 'Easy',
             difficultyMedium: 'Medium',
@@ -435,6 +463,32 @@ function initLanguageToggle() {
             correctAnswer: 'Correct! Great job.',
             incorrectAnswer: 'Incorrect. Try again.',
             enterNumber: 'Please enter a number.',
+            problems: {
+                1: {
+                    text: 'Find the volume of a dodecahedron if its edge length is 5 cm.',
+                    hint: 'Hint: Use the formula \(V = \frac{15 + 7\sqrt{5}}{4} \times a^3\), where \(a\) is the edge length.'
+                },
+                2: {
+                    text: 'Find the surface area of a dodecahedron with an edge length of 3 cm.',
+                    hint: 'Hint: Use the formula \(S = 3\sqrt{25 + 10\sqrt{5}} \times a^2\), where \(a\) is the edge length.'
+                },
+                3: {
+                    text: 'Find the radius of the inscribed sphere of a dodecahedron with an edge length of 4 cm.',
+                    hint: 'Hint: The radius of the inscribed sphere \(r = a \times \frac{\sqrt{75 + 30\sqrt{5}}}{20}\), where \(a\) is the edge length.'
+                },
+                4: {
+                    text: 'For a dodecahedron with a circumscribed sphere radius of 10 cm, find its edge length.',
+                    hint: 'Hint: The radius of the circumscribed sphere \(R = a\sqrt{3} \times \frac{1 + \sqrt{5}}{4}\), where \(a\) is the edge length. Express \(a\) from this formula.'
+                },
+                5: {
+                    text: 'Calculate the dihedral angle of a dodecahedron (the angle between adjacent faces).',
+                    hint: 'Hint: The dihedral angle of a dodecahedron is size-independent and equals \(\cos^{-1}(-\frac{1}{\sqrt{5}})\).'
+                },
+                6: {
+                    text: 'A dodecahedron is inscribed in a cube so that each vertex of the dodecahedron lies on one of the cube\'s faces. If the cube\'s volume is 1000 cm³, find the volume of the dodecahedron.',
+                    hint: 'Hint: This is a complex geometric problem. You need to find the ratio of volumes of the dodecahedron and cube in this configuration.'
+                }
+            },
             
             // Achievement modal
             achievementTitle: 'You are now a Dodecahedron Master!',
@@ -454,166 +508,167 @@ function initLanguageToggle() {
     
     // Функция для перевода страницы
     function translatePage(language) {
-        // Обновляем текст сплеш-экрана, если он еще виден
-        const splashTitle = document.querySelector('.splash-title');
-        if (splashTitle) {
-            splashTitle.textContent = translations[language].splashTitle;
+        // Сохраняем выбранный язык в localStorage
+        localStorage.setItem('selectedLanguage', language);
+        
+        // Обновляем класс body для темы
+        document.body.className = language === 'en' ? 'light-theme' : 'light-theme';
+        
+        // Обновляем метатеги
+        document.querySelector('meta[name="description"]').content = translations[language].metaDescription;
+        document.querySelector('meta[name="keywords"]').content = translations[language].metaKeywords;
+        
+        // Обновляем заголовок страницы
+        document.title = translations[language].pageTitle;
+        
+        // Обновляем текст в шапке
+        const logo = document.querySelector('.logo span');
+        if (logo) {
+            logo.textContent = translations[language].logo;
         }
         
-        // Основная навигация
-        const navItems = {
-            modelLink: document.querySelector('nav ul li:nth-child(1) a'),
-            historyLink: document.querySelector('nav ul li:nth-child(2) a'),
-            calculatorLink: document.querySelector('nav ul li:nth-child(3) a'),
-            problemsLink: document.querySelector('nav ul li:nth-child(4) a'),
-            logoText: document.querySelector('.logo span')
-        };
-        
-        // Секция героя
-        const heroItems = {
-            heroTitle: document.querySelector('.hero-content h2'),
-            heroSubtitle: document.querySelector('.hero-content p')
-        };
-        
-        // Секция 3D модели
-        const modelItems = {
-            modelTitle: document.querySelector('#model h2'),
-            rotateButton: document.querySelector('#rotate-toggle'),
-            wireframeButton: document.querySelector('#wireframe-toggle'),
-            colorLabel: document.querySelector('.color-controls label')
-        };
-        
-        // Секция истории
-        const historyItems = {
-            historyTitle: document.querySelector('#history h2'),
-            historySubtitle1: document.querySelector('.history-text h3:nth-child(1)'),
-            historyText1: document.querySelector('.history-text p:nth-child(2)'),
-            historySubtitle2: document.querySelector('.history-text h3:nth-child(3)'),
-            historyText2: document.querySelector('.history-text p:nth-child(4)'),
-            historySubtitle3: document.querySelector('.history-text h3:nth-child(5)'),
-            historyText3: document.querySelector('.history-text p:nth-child(6)'),
-            imageCaption: document.querySelector('.caption')
-        };
-        
-        // Секция калькулятора
-        const calculatorItems = {
-            calculatorTitle: document.querySelector('#calculator h2'),
-            parametersTitle: document.querySelector('.parameter-selection p'),
-            edgeLabel: document.querySelector('#edge-checkbox').parentNode.textContent.trim(),
-            volumeLabel: document.querySelector('#volume-checkbox').parentNode.textContent.trim(),
-            surfaceLabel: document.querySelector('#surface-checkbox').parentNode.textContent.trim(),
-            circumscribedLabel: document.querySelector('#circumscribed-checkbox').parentNode.textContent.trim(),
-            inscribedLabel: document.querySelector('#inscribed-checkbox').parentNode.textContent.trim(),
-            calculateButton: document.querySelector('#calculate-btn'),
-            resultsTitle: document.querySelector('.results-container h3'),
-            edgeResult: document.querySelector('#edge-result-card h4'),
-            volumeResult: document.querySelector('#volume-result-card h4'),
-            surfaceResult: document.querySelector('#surface-area-result-card h4'),
-            circumscribedResult: document.querySelector('#circumscribed-radius-result-card h4'),
-            inscribedResult: document.querySelector('#inscribed-radius-result-card h4')
-        };
-        
-        // Футер
-        const footerItems = {
-            aboutProject: document.querySelector('.footer-section:nth-child(1) h3'),
-            aboutText: document.querySelector('.footer-section:nth-child(1) p'),
-            navigationTitle: document.querySelector('.footer-section:nth-child(2) h3'),
-            resourcesTitle: document.querySelector('.footer-section:nth-child(3) h3'),
-            wikipediaLink: document.querySelector('.footer-section:nth-child(3) ul li:nth-child(1) a'),
-            mathworldLink: document.querySelector('.footer-section:nth-child(3) ul li:nth-child(2) a')
-        };
-        
-        // Объединяем все элементы для упрощения перебора
-        const allElements = {...navItems, ...heroItems, ...modelItems, ...historyItems, ...calculatorItems, ...footerItems};
-        
-        // Перебираем все элементы и меняем их содержимое
-        for (const [key, element] of Object.entries(allElements)) {
-            if (element && translations[language][key]) {
-                // Особая обработка для элементов с иконками
-                if (key === 'rotateButton' || key === 'wireframeButton') {
-                    const icon = element.querySelector('i');
-                    if (icon) {
-                        const iconHTML = icon.outerHTML;
-                        element.innerHTML = iconHTML + ' ' + translations[language][key];
-                    } else {
-                        element.textContent = translations[language][key];
-                    }
-                }
-                // Особая обработка для элементов с чекбоксами
-                else if (key.endsWith('Label') && key !== 'colorLabel') {
-                    // Находим родительский элемент label
-                    const labelElement = document.querySelector(`#${key.replace('Label', '')}-checkbox`).parentNode;
-                    // Сохраняем чекбокс
-                    const checkbox = labelElement.querySelector('input[type="checkbox"]');
-                    // Обновляем текст, сохраняя чекбокс в начале
-                    labelElement.innerHTML = '';
-                    labelElement.appendChild(checkbox);
-                    labelElement.appendChild(document.createTextNode(' ' + translations[language][key]));
-                }
-                else {
-                    element.textContent = translations[language][key];
+        // Обновляем навигацию
+        const navLinks = document.querySelectorAll('nav a');
+        navLinks.forEach(link => {
+            const href = link.getAttribute('href');
+            if (href) {
+                if (href.includes('#model')) {
+                    link.textContent = translations[language].nav.model;
+                } else if (href.includes('#history')) {
+                    link.textContent = translations[language].nav.history;
+                } else if (href.includes('#calculator')) {
+                    link.textContent = translations[language].nav.calculator;
+                } else if (href.includes('problems.html')) {
+                    link.textContent = translations[language].nav.problems;
                 }
             }
+        });
+        
+        // Обновляем текст в секции с 3D моделью
+        const modelSection = document.querySelector('#model');
+        if (modelSection) {
+            const modelTitle = modelSection.querySelector('h2');
+            const modelDescription = modelSection.querySelector('p');
+            const wireframeToggle = document.getElementById('wireframe-toggle');
+            const colorPicker = document.getElementById('model-color');
+            
+            if (modelTitle) modelTitle.textContent = translations[language].model.title;
+            if (modelDescription) modelDescription.textContent = translations[language].model.description;
+            if (wireframeToggle) wireframeToggle.textContent = translations[language].model.wireframeToggle;
+            if (colorPicker) colorPicker.title = translations[language].model.colorPicker;
         }
         
-        // Обновляем сообщения об ошибках для функции калькулятора
-        // Это не отображаемые элементы, но мы обновляем строки, которые могут появиться
-        window.calculatorMessages = {
-            errorTooMany: translations[language].errorTooMany,
-            errorNoParameters: translations[language].errorNoParameters,
-            errorInvalidValues: translations[language].errorInvalidValues,
-            errorInconsistent: translations[language].errorInconsistent,
-            successMessage: translations[language].successMessage
-        };
+        // Обновляем текст в секции с историей
+        const historySection = document.querySelector('#history');
+        if (historySection) {
+            const historyTitle = historySection.querySelector('h2');
+            const historyDescription = historySection.querySelector('p');
+            
+            if (historyTitle) historyTitle.textContent = translations[language].history.title;
+            if (historyDescription) historyDescription.textContent = translations[language].history.description;
+        }
+        
+        // Обновляем текст в секции с калькулятором
+        const calculatorSection = document.querySelector('#calculator');
+        if (calculatorSection) {
+            const calculatorTitle = calculatorSection.querySelector('h2');
+            const calculatorDescription = calculatorSection.querySelector('p');
+            const calculateBtn = calculatorSection.querySelector('.calculate-btn');
+            const resultLabel = calculatorSection.querySelector('.result-label');
+            const resultValue = calculatorSection.querySelector('.result-value');
+            
+            if (calculatorTitle) calculatorTitle.textContent = translations[language].calculator.title;
+            if (calculatorDescription) calculatorDescription.textContent = translations[language].calculator.description;
+            if (calculateBtn) calculateBtn.textContent = translations[language].calculator.calculate;
+            if (resultLabel) resultLabel.textContent = translations[language].calculator.result;
+            if (resultValue) resultValue.textContent = translations[language].calculator.enterValue;
+        }
+        
+        // Обновляем текст в футере
+        const footer = document.querySelector('footer');
+        if (footer) {
+            const footerTitle = footer.querySelector('h3');
+            const footerDescription = footer.querySelector('p');
+            
+            if (footerTitle) footerTitle.textContent = translations[language].footer.title;
+            if (footerDescription) footerDescription.textContent = translations[language].footer.description;
+        }
         
         // Страница задач - если мы на ней
         const problemsPage = document.querySelector('.problems-list');
         if (problemsPage) {
-            // Заголовок страницы задач
-            document.querySelector('.problems-header h2').textContent = translations[language].problemsTitle;
-            document.querySelector('.problems-header p').textContent = translations[language].problemsSubtitle;
-            
-            // Кнопки фильтра
-            document.querySelector('.difficulty-btn[data-difficulty="all"]').textContent = translations[language].difficultyAll;
-            document.querySelector('.difficulty-btn[data-difficulty="easy"]').textContent = translations[language].difficultyEasy;
-            document.querySelector('.difficulty-btn[data-difficulty="medium"]').textContent = translations[language].difficultyMedium;
-            document.querySelector('.difficulty-btn[data-difficulty="hard"]').textContent = translations[language].difficultyHard;
-            
-            // Карточки задач
-            document.querySelectorAll('.problem-card').forEach((card, index) => {
-                // Номер задачи
-                card.querySelector('.problem-number').textContent = `${translations[language].problemPrefix} ${index + 1}`;
+            // Обновляем заголовок страницы задач
+            const problemsHeader = document.querySelector('.problems-header');
+            if (problemsHeader) {
+                const problemsTitle = problemsHeader.querySelector('h2');
+                const problemsSubtitle = problemsHeader.querySelector('p');
                 
-                // Кнопка подсказки
-                const hintBtn = card.querySelector('.hint-btn');
-                const hintText = card.querySelector('.problem-hint');
-                if (hintBtn) {
-                    if (hintText.classList.contains('hidden')) {
-                        hintBtn.innerHTML = `<i class="fas fa-lightbulb"></i> ${translations[language].hintShow}`;
-                    } else {
-                        hintBtn.innerHTML = `<i class="fas fa-times"></i> ${translations[language].hintHide}`;
+                if (problemsTitle) problemsTitle.textContent = translations[language].problemsTitle;
+                if (problemsSubtitle) problemsSubtitle.textContent = translations[language].problemsSubtitle;
+            }
+            
+            // Обновляем фильтр по сложности
+            const difficultyFilter = document.querySelector('.difficulty-filter');
+            if (difficultyFilter) {
+                const difficultyTitle = difficultyFilter.querySelector('h3');
+                if (difficultyTitle) difficultyTitle.textContent = translations[language].difficultyTitle;
+                
+                const difficultyButtons = difficultyFilter.querySelectorAll('.difficulty-btn');
+                difficultyButtons.forEach(button => {
+                    const difficulty = button.dataset.difficulty;
+                    if (difficulty === 'all') {
+                        button.textContent = translations[language].difficultyAll;
+                    } else if (difficulty === 'easy') {
+                        button.textContent = translations[language].difficultyEasy;
+                    } else if (difficulty === 'medium') {
+                        button.textContent = translations[language].difficultyMedium;
+                    } else if (difficulty === 'hard') {
+                        button.textContent = translations[language].difficultyHard;
                     }
+                });
+            }
+            
+            // Обновляем задачи
+            const problemCards = problemsPage.querySelectorAll('.problem-card');
+            problemCards.forEach((card, index) => {
+                const problemNumber = card.querySelector('.problem-number');
+                const problemText = card.querySelector('.problem-content p');
+                const hintButton = card.querySelector('.hint-btn');
+                const hintText = card.querySelector('.problem-hint p');
+                const input = card.querySelector('input');
+                const checkButton = card.querySelector('.check-btn');
+                const feedback = card.querySelector('.solution-feedback');
+                
+                if (problemNumber) {
+                    problemNumber.textContent = `${translations[language].problemPrefix} ${index + 1}`;
                 }
                 
-                // Кнопка проверки
-                const checkBtn = card.querySelector('.check-btn');
-                if (checkBtn) {
-                    checkBtn.textContent = translations[language].checkAnswer;
+                if (problemText) {
+                    problemText.textContent = translations[language].problems[index + 1].text;
                 }
                 
-                // Placeholder для ввода ответа
-                const answerInput = card.querySelector('.solution-input input');
-                if (answerInput) {
-                    answerInput.placeholder = translations[language].answerPlaceholder;
+                if (hintButton) {
+                    hintButton.innerHTML = `<i class="fas fa-lightbulb"></i> ${translations[language].hintShow}`;
+                }
+                
+                if (hintText) {
+                    hintText.textContent = translations[language].problems[index + 1].hint;
+                }
+                
+                if (input) {
+                    input.placeholder = translations[language].answerPlaceholder;
+                }
+                
+                if (checkButton) {
+                    checkButton.textContent = translations[language].checkAnswer;
+                }
+                
+                if (feedback && feedback.textContent === translations['ru'].correctAnswer) {
+                    feedback.textContent = translations[language].correctAnswer;
+                } else if (feedback && feedback.textContent === translations['ru'].incorrectAnswer) {
+                    feedback.textContent = translations[language].incorrectAnswer;
                 }
             });
-            
-            // Обновляем сообщения для проверки ответов
-            window.problemMessages = {
-                correctAnswer: translations[language].correctAnswer,
-                incorrectAnswer: translations[language].incorrectAnswer,
-                enterNumber: translations[language].enterNumber
-            };
             
             // Переводим модальное окно достижения, если оно существует
             const achievementModal = document.getElementById('achievement-modal');
@@ -634,27 +689,6 @@ function initLanguageToggle() {
                     achievementButton.textContent = translations[language].achievementButton;
                 }
             }
-        }
-
-        // Для футера, важно обновить все ссылки в навигационном разделе
-        const footerNavigationLinks = document.querySelectorAll('.footer-section:nth-child(2) ul li a');
-        if (footerNavigationLinks.length > 0) {
-            footerNavigationLinks.forEach((link, index) => {
-                switch(index) {
-                    case 0:
-                        link.textContent = translations[language].modelLink;
-                        break;
-                    case 1:
-                        link.textContent = translations[language].historyLink;
-                        break;
-                    case 2:
-                        link.textContent = translations[language].calculatorLink;
-                        break;
-                    case 3:
-                        link.textContent = translations[language].problemsLink;
-                        break;
-                }
-            });
         }
     }
     
@@ -1201,4 +1235,13 @@ function calculateCircumscribedRadius(a) {
  */
 function calculateInscribedRadius(a) {
     return DodecahedronConstants.INSCRIBED_RADIUS_COEFFICIENT * a;
-} 
+}
+
+// Функция для загрузки сохраненного языка при загрузке страницы
+function loadSavedLanguage() {
+    const savedLanguage = localStorage.getItem('selectedLanguage') || 'ru';
+    translatePage(savedLanguage);
+}
+
+// Добавляем вызов функции загрузки языка при загрузке страницы
+document.addEventListener('DOMContentLoaded', loadSavedLanguage); 
