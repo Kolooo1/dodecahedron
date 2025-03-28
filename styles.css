@@ -1511,4 +1511,118 @@ footer {
 .dark-theme .calculate-btn {
     color: #ffffff;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Модальное окно достижения "Мастер додекаэдра" */
+.achievement-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s, visibility 0.5s;
+}
+
+.achievement-modal.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.achievement-content {
+    background: var(--bg-color);
+    padding: 40px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 5px 30px rgba(var(--primary-color-rgb), 0.3);
+    max-width: 500px;
+    width: 90%;
+    position: relative;
+    transform: scale(0.7);
+    transition: transform 0.5s;
+    border: 3px solid var(--primary-color);
+    animation: achievementAppear 0.5s forwards;
+}
+
+.achievement-modal.show .achievement-content {
+    transform: scale(1);
+}
+
+.achievement-icon {
+    font-size: 60px;
+    color: var(--accent-color);
+    margin-bottom: 20px;
+    display: inline-block;
+    animation: achievementSpin 2s infinite;
+}
+
+.achievement-title {
+    font-size: 28px;
+    color: var(--text-color);
+    margin-bottom: 15px;
+    font-weight: 700;
+}
+
+.achievement-description {
+    font-size: 18px;
+    color: var(--secondary-text-color);
+    margin-bottom: 30px;
+    line-height: 1.5;
+}
+
+.achievement-close {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 30px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 4px 10px rgba(var(--primary-color-rgb), 0.3);
+}
+
+.achievement-close:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(var(--primary-color-rgb), 0.4);
+}
+
+@keyframes achievementSpin {
+    0% {
+        transform: rotate(0deg);
+    }
+    25% {
+        transform: rotate(90deg);
+    }
+    50% {
+        transform: rotate(180deg);
+    }
+    75% {
+        transform: rotate(270deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes achievementAppear {
+    0% {
+        opacity: 0;
+        transform: scale(0.7);
+    }
+    70% {
+        opacity: 1;
+        transform: scale(1.05);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
 } 

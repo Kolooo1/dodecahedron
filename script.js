@@ -4,6 +4,16 @@ let isRotating = true;
 let isWireframe = false;
 let controls;
 
+// Отслеживание решенных задач
+const solvedProblems = {
+    1: false,
+    2: false,
+    3: false,
+    4: false,
+    5: false,
+    6: false
+};
+
 // Ответы на задачи
 const problemAnswers = {
     1: 957.89, // Объем додекаэдра с ребром 5 см
@@ -343,7 +353,12 @@ function initLanguageToggle() {
             answerPlaceholder: 'Ваш ответ',
             correctAnswer: 'Правильно! Отличная работа.',
             incorrectAnswer: 'Неправильно. Попробуйте еще раз.',
-            enterNumber: 'Пожалуйста, введите число.'
+            enterNumber: 'Пожалуйста, введите число.',
+            
+            // Модальное окно достижения
+            achievementTitle: 'Вы стали Мастером Додекаэдра!',
+            achievementDescription: 'Поздравляем! Вы успешно решили все задачи и продемонстрировали глубокое понимание свойств додекаэдра. Теперь вы настоящий мастер этой удивительной геометрической фигуры!',
+            achievementButton: 'Принять награду'
         },
         en: {
             // Navigation and header
@@ -419,7 +434,12 @@ function initLanguageToggle() {
             answerPlaceholder: 'Your answer',
             correctAnswer: 'Correct! Great job.',
             incorrectAnswer: 'Incorrect. Try again.',
-            enterNumber: 'Please enter a number.'
+            enterNumber: 'Please enter a number.',
+            
+            // Achievement modal
+            achievementTitle: 'You are now a Dodecahedron Master!',
+            achievementDescription: 'Congratulations! You have successfully solved all problems and demonstrated a deep understanding of dodecahedron properties. You are now a true master of this amazing geometric figure!',
+            achievementButton: 'Accept reward'
         }
     };
     
@@ -594,6 +614,26 @@ function initLanguageToggle() {
                 incorrectAnswer: translations[language].incorrectAnswer,
                 enterNumber: translations[language].enterNumber
             };
+            
+            // Переводим модальное окно достижения, если оно существует
+            const achievementModal = document.getElementById('achievement-modal');
+            if (achievementModal) {
+                const achievementTitle = achievementModal.querySelector('.achievement-title');
+                const achievementDescription = achievementModal.querySelector('.achievement-description');
+                const achievementButton = achievementModal.querySelector('.achievement-close');
+                
+                if (achievementTitle) {
+                    achievementTitle.textContent = translations[language].achievementTitle;
+                }
+                
+                if (achievementDescription) {
+                    achievementDescription.textContent = translations[language].achievementDescription;
+                }
+                
+                if (achievementButton) {
+                    achievementButton.textContent = translations[language].achievementButton;
+                }
+            }
         }
 
         // Для футера, важно обновить все ссылки в навигационном разделе
@@ -931,11 +971,27 @@ function changeModelColor(event) {
  * Инициализирует функциональность страницы с задачами
  */
 function initProblemPage() {
+    // Загружаем информацию о решенных задачах из localStorage
+    loadSolvedProblems();
+    
     // Добавляем обработчики для кнопок проверки ответов
     document.querySelectorAll('.check-btn').forEach((button, index) => {
         button.addEventListener('click', () => {
             checkAnswer(index + 1, button.closest('.problem-solution'));
         });
+        
+        // Отмечаем визуально уже решенные задачи
+        const problemCard = button.closest('.problem-card');
+        const problemNumber = index + 1;
+        if (solvedProblems[problemNumber]) {
+            const feedback = problemCard.querySelector('.solution-feedback');
+            let correctAnswerMessage = 'Правильно! Отличная работа.';
+            if (window.problemMessages) {
+                correctAnswerMessage = window.problemMessages.correctAnswer;
+            }
+            feedback.textContent = correctAnswerMessage;
+            feedback.className = 'solution-feedback correct';
+        }
     });
     
     // Добавляем обработчики для кнопок фильтра по сложности
@@ -985,6 +1041,28 @@ function initProblemPage() {
             }
         });
     });
+    
+    // Добавляем обработчик для кнопки закрытия модального окна достижения
+    const achievementCloseBtn = document.getElementById('achievement-close');
+    if (achievementCloseBtn) {
+        achievementCloseBtn.addEventListener('click', () => {
+            document.getElementById('achievement-modal').classList.remove('show');
+        });
+    }
+    
+    // Проверяем, решены ли все задачи при загрузке страницы
+    checkMastery();
+}
+
+/**
+ * Загружает информацию о решенных задачах из localStorage
+ */
+function loadSolvedProblems() {
+    // Проверяем наличие сохраненных данных для каждой задачи
+    for (let i = 1; i <= Object.keys(solvedProblems).length; i++) {
+        const isSolved = localStorage.getItem(`problem_${i}_solved`) === 'true';
+        solvedProblems[i] = isSolved;
+    }
 }
 
 /**
@@ -1020,9 +1098,56 @@ function checkAnswer(problemNumber, solutionElement) {
     if (Math.abs(userAnswer - correctAnswer) <= tolerance) {
         feedback.textContent = correctAnswerMessage;
         feedback.className = 'solution-feedback correct';
+        
+        // Отмечаем задачу как решенную
+        solvedProblems[problemNumber] = true;
+        
+        // Сохраняем информацию о решенной задаче в localStorage
+        localStorage.setItem(`problem_${problemNumber}_solved`, 'true');
+        
+        // Проверяем, решены ли все задачи
+        checkMastery();
     } else {
         feedback.textContent = incorrectAnswerMessage;
         feedback.className = 'solution-feedback incorrect';
+    }
+}
+
+/**
+ * Проверяет, решены ли все задачи, и показывает модальное окно достижения, если да
+ */
+function checkMastery() {
+    // Проверяем, все ли задачи решены
+    const allSolved = Object.values(solvedProblems).every(solved => solved === true);
+    
+    // Проверяем, показывалось ли уже достижение
+    const achievementShown = localStorage.getItem('dodecahedronMaster') === 'true';
+    
+    // Если все задачи решены и достижение еще не показывалось
+    if (allSolved && !achievementShown) {
+        // Показываем модальное окно достижения
+        showAchievementModal();
+        
+        // Сохраняем информацию о достижении в localStorage
+        localStorage.setItem('dodecahedronMaster', 'true');
+    }
+}
+
+/**
+ * Показывает модальное окно достижения
+ */
+function showAchievementModal() {
+    const modal = document.getElementById('achievement-modal');
+    if (modal) {
+        modal.classList.add('show');
+        
+        // Добавляем обработчик для кнопки закрытия
+        const closeButton = document.getElementById('achievement-close');
+        if (closeButton) {
+            closeButton.addEventListener('click', () => {
+                modal.classList.remove('show');
+            });
+        }
     }
 }
 
