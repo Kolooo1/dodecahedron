@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Додекаэдр - Геометрическое чудо</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/examples/js/controls/OrbitControls.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body class="light-theme">
+    <!-- Сплеш-экран -->
+    <div class="splash-screen">
+        <h1 class="splash-title">Додекаэдр</h1>
+        <div class="splash-figures">
+            <div class="splash-figure-item"></div>
+            <div class="splash-figure-item"></div>
+            <div class="splash-figure-item"></div>
+            <div class="splash-figure-item"></div>
+            <div class="splash-figure-item"></div>
+        </div>
+    </div>
+    
+    <header>
+        <div class="logo">
+            <i class="fas fa-cube"></i>
+            <span>Додекаэдр</span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#model">3D Модель</a></li>
+                <li><a href="#history">История</a></li>
+                <li><a href="#calculator">Калькулятор</a></li>
+                <li><a href="problems.html">Задачи</a></li>
+            </ul>
+        </nav>
+        <div class="theme-toggle">
+            <i class="fas fa-sun"></i>
+            <label class="switch">
+                <input type="checkbox" id="theme-switch">
+                <span class="slider round"></span>
+            </label>
+            <i class="fas fa-moon"></i>
+        </div>
+        <div class="language-toggle">
+            <button id="language-switch">EN</button>
+        </div>
+    </header>
+
+    <section id="hero">
+        <div class="hero-content">
+            <h2>Изучите магию додекаэдра</h2>
+            <p>Один из пяти платоновых тел с 12 гранями, 30 рёбрами и 20 вершинами</p>
+        </div>
+    </section>
+
+    <section id="model" class="section">
+        <h2>3D Модель</h2>
+        <div class="model-container">
+            <div id="dodecahedron-model"></div>
+            <div class="model-controls">
+                <button id="rotate-toggle"><i class="fas fa-sync-alt"></i> Вращение</button>
+                <button id="wireframe-toggle"><i class="fas fa-vector-square"></i> Каркас</button>
+                <div class="color-controls">
+                    <label for="model-color">Цвет модели:</label>
+                    <input type="color" id="model-color" value="#3498db">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="history" class="section">
+        <h2>История додекаэдра</h2>
+        <div class="history-content">
+            <div class="history-text">
+                <h3>Древние истоки</h3>
+                <p>Додекаэдр был известен ещё пифагорейцам (VI век до н. э.) и считался символом вселенной. Платон в диалоге «Тимей» связывал додекаэдр с "космосом", предполагая, что это форма Вселенной.</p>
+                
+                <h3>В руках мастеров и учёных</h3>
+                <p>Архимед, Евклид и другие древнегреческие математики изучали свойства додекаэдра и включали его в свои труды. В эпоху Возрождения художники и учёные, такие как Леонардо да Винчи и Кеплер, были очарованы его симметрией.</p>
+                
+                <h3>Современное значение</h3>
+                <p>Сегодня додекаэдр нашёл применение в различных областях: от кристаллографии до молекулярной биологии. Некоторые вирусы имеют додекаэдрическую форму. В популярной культуре додекаэдр известен как 12-гранный игральный кубик (D12) в настольных играх.</p>
+            </div>
+            <div class="history-image">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Dodecahedron.svg/1200px-Dodecahedron.svg.png" alt="Историческое изображение додекаэдра">
+                <p class="caption">Классическое изображение додекаэдра</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="calculator" class="section">
+        <div class="container">
+            <h2>Калькулятор свойств додекаэдра</h2>
+            <div class="calculator-container">
+                <div class="calculator-form">
+                    <div class="parameter-selection">
+                        <p>Выберите известные параметры (не более двух):</p>
+                        
+                        <div class="parameter-item">
+                            <label class="parameter-label">
+                                <input type="checkbox" id="edge-checkbox" class="parameter-checkbox" checked>
+                                Длина ребра (a)
+                            </label>
+                            <div id="edge-value-container" class="parameter-value-container">
+                                <input type="number" id="edge-length" class="parameter-input" min="0.1" step="0.1" value="1">
+                                <span class="unit">см</span>
+                            </div>
+                        </div>
+                        
+                        <div class="parameter-item">
+                            <label class="parameter-label">
+                                <input type="checkbox" id="volume-checkbox" class="parameter-checkbox">
+                                Объем (V)
+                            </label>
+                            <div id="volume-value-container" class="parameter-value-container">
+                                <input type="number" id="volume-value" class="parameter-input" min="0.1" step="0.1" disabled>
+                                <span class="unit">см³</span>
+                            </div>
+                        </div>
+                        
+                        <div class="parameter-item">
+                            <label class="parameter-label">
+                                <input type="checkbox" id="surface-checkbox" class="parameter-checkbox">
+                                Площадь поверхности (S)
+                            </label>
+                            <div id="surface-value-container" class="parameter-value-container">
+                                <input type="number" id="surface-value" class="parameter-input" min="0.1" step="0.1" disabled>
+                                <span class="unit">см²</span>
+                            </div>
+                        </div>
+                        
+                        <div class="parameter-item">
+                            <label class="parameter-label">
+                                <input type="checkbox" id="circumscribed-checkbox" class="parameter-checkbox">
+                                Радиус описанной сферы (R)
+                            </label>
+                            <div id="circumscribed-value-container" class="parameter-value-container">
+                                <input type="number" id="circumscribed-value" class="parameter-input" min="0.1" step="0.1" disabled>
+                                <span class="unit">см</span>
+                            </div>
+                        </div>
+                        
+                        <div class="parameter-item">
+                            <label class="parameter-label">
+                                <input type="checkbox" id="inscribed-checkbox" class="parameter-checkbox">
+                                Радиус вписанной сферы (r)
+                            </label>
+                            <div id="inscribed-value-container" class="parameter-value-container">
+                                <input type="number" id="inscribed-value" class="parameter-input" min="0.1" step="0.1" disabled>
+                                <span class="unit">см</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="calculate-container">
+                        <button id="calculate-btn" class="calculate-btn">Рассчитать</button>
+                        <div id="calculation-message" class="calculation-message"></div>
+                    </div>
+                </div>
+                
+                <div class="results-container">
+                    <h3>Результаты расчета:</h3>
+                    <div class="result-cards">
+                        <div id="edge-result-card" class="result-card">
+                            <h4>Длина ребра (a)</h4>
+                            <div id="edge-result" class="result-value">1.00 см</div>
+                        </div>
+                        <div id="volume-result-card" class="result-card">
+                            <h4>Объем (V)</h4>
+                            <div id="volume-result" class="result-value">7.66 см³</div>
+                        </div>
+                        <div id="surface-area-result-card" class="result-card">
+                            <h4>Площадь поверхности (S)</h4>
+                            <div id="surface-area-result" class="result-value">20.65 см²</div>
+                        </div>
+                        <div id="circumscribed-radius-result-card" class="result-card">
+                            <h4>Радиус описанной сферы (R)</h4>
+                            <div id="circumscribed-radius-result" class="result-value">1.40 см</div>
+                        </div>
+                        <div id="inscribed-radius-result-card" class="result-card">
+                            <h4>Радиус вписанной сферы (r)</h4>
+                            <div id="inscribed-radius-result" class="result-value">1.11 см</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>О проекте</h3>
+                <p>Этот сайт создан для изучения додекаэдра и его математических свойств.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Навигация</h3>
+                <ul>
+                    <li><a href="#model">3D Модель</a></li>
+                    <li><a href="#history">История</a></li>
+                    <li><a href="#calculator">Калькулятор</a></li>
+                    <li><a href="problems.html">Задачи</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Ресурсы</h3>
+                <ul>
+                    <li><a href="https://en.wikipedia.org/wiki/Dodecahedron" target="_blank">Википедия</a></li>
+                    <li><a href="https://mathworld.wolfram.com/Dodecahedron.html" target="_blank">Wolfram MathWorld</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html> 

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Задачи - Додекаэдр</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.0/es5/tex-mml-chtml.js"></script>
+</head>
+<body class="light-theme">
+    <!-- Сплеш-экран -->
+    <div class="splash-screen">
+        <h1 class="splash-title">Додекаэдр</h1>
+        <div class="splash-figures">
+            <div class="splash-figure-item"></div>
+            <div class="splash-figure-item"></div>
+            <div class="splash-figure-item"></div>
+            <div class="splash-figure-item"></div>
+            <div class="splash-figure-item"></div>
+        </div>
+    </div>
+
+    <header>
+        <div class="logo">
+            <i class="fas fa-cube"></i>
+            <h1>Додекаэдр</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html#model">3D Модель</a></li>
+                <li><a href="index.html#history">История</a></li>
+                <li><a href="index.html#calculator">Калькулятор</a></li>
+                <li><a href="problems.html" class="active">Задачи</a></li>
+            </ul>
+        </nav>
+        <div class="theme-toggle">
+            <i class="fas fa-sun"></i>
+            <label class="switch">
+                <input type="checkbox" id="theme-switch">
+                <span class="slider round"></span>
+            </label>
+            <i class="fas fa-moon"></i>
+        </div>
+    </header>
+
+    <section class="problems-header">
+        <h2>Математические задачи о додекаэдре</h2>
+        <p>Проверьте свои знания и навыки с помощью этих увлекательных задач!</p>
+    </section>
+
+    <section class="problems-container">
+        <div class="difficulty-filter">
+            <h3>Сложность:</h3>
+            <button class="difficulty-btn active" data-difficulty="all">Все</button>
+            <button class="difficulty-btn" data-difficulty="easy">Легкие</button>
+            <button class="difficulty-btn" data-difficulty="medium">Средние</button>
+            <button class="difficulty-btn" data-difficulty="hard">Сложные</button>
+        </div>
+
+        <div class="problems-list">
+            <!-- Задача 1 -->
+            <div class="problem-card" data-difficulty="easy">
+                <div class="problem-header">
+                    <span class="problem-number">Задача 1</span>
+                    <span class="difficulty easy">Легкая</span>
+                </div>
+                <div class="problem-content">
+                    <p>Найдите объем додекаэдра, если длина его ребра равна 5 см.</p>
+                    <div class="hint-container">
+                        <button class="hint-btn"><i class="fas fa-lightbulb"></i> Показать подсказку</button>
+                        <div class="problem-hint hidden">
+                            <p>Подсказка: Используйте формулу \(V = \frac{15 + 7\sqrt{5}}{4} \times a^3\), где \(a\) - длина ребра.</p>
+                        </div>
+                    </div>
+                    <div class="problem-solution">
+                        <div class="solution-input">
+                            <input type="number" step="0.01" placeholder="Ваш ответ">
+                            <button class="check-btn">Проверить</button>
+                        </div>
+                        <div class="solution-feedback"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Задача 2 -->
+            <div class="problem-card" data-difficulty="easy">
+                <div class="problem-header">
+                    <span class="problem-number">Задача 2</span>
+                    <span class="difficulty easy">Легкая</span>
+                </div>
+                <div class="problem-content">
+                    <p>Найдите площадь поверхности додекаэдра с ребром длиной 3 см.</p>
+                    <div class="hint-container">
+                        <button class="hint-btn"><i class="fas fa-lightbulb"></i> Показать подсказку</button>
+                        <div class="problem-hint hidden">
+                            <p>Подсказка: Используйте формулу \(S = 3\sqrt{25 + 10\sqrt{5}} \times a^2\), где \(a\) - длина ребра.</p>
+                        </div>
+                    </div>
+                    <div class="problem-solution">
+                        <div class="solution-input">
+                            <input type="number" step="0.01" placeholder="Ваш ответ">
+                            <button class="check-btn">Проверить</button>
+                        </div>
+                        <div class="solution-feedback"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Задача 3 -->
+            <div class="problem-card" data-difficulty="medium">
+                <div class="problem-header">
+                    <span class="problem-number">Задача 3</span>
+                    <span class="difficulty medium">Средняя</span>
+                </div>
+                <div class="problem-content">
+                    <p>Найдите радиус вписанной сферы додекаэдра с ребром 4 см.</p>
+                    <div class="hint-container">
+                        <button class="hint-btn"><i class="fas fa-lightbulb"></i> Показать подсказку</button>
+                        <div class="problem-hint hidden">
+                            <p>Подсказка: Радиус вписанной сферы \(r = a \times \frac{\sqrt{75 + 30\sqrt{5}}}{20}\), где \(a\) - длина ребра.</p>
+                        </div>
+                    </div>
+                    <div class="problem-solution">
+                        <div class="solution-input">
+                            <input type="number" step="0.01" placeholder="Ваш ответ">
+                            <button class="check-btn">Проверить</button>
+                        </div>
+                        <div class="solution-feedback"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Задача 4 -->
+            <div class="problem-card" data-difficulty="medium">
+                <div class="problem-header">
+                    <span class="problem-number">Задача 4</span>
+                    <span class="difficulty medium">Средняя</span>
+                </div>
+                <div class="problem-content">
+                    <p>Для додекаэдра с радиусом описанной сферы 10 см найдите длину его ребра.</p>
+                    <div class="hint-container">
+                        <button class="hint-btn"><i class="fas fa-lightbulb"></i> Показать подсказку</button>
+                        <div class="problem-hint hidden">
+                            <p>Подсказка: Радиус описанной сферы \(R = a\sqrt{3} \times \frac{1 + \sqrt{5}}{4}\), где \(a\) - длина ребра. Выразите \(a\) из этой формулы.</p>
+                        </div>
+                    </div>
+                    <div class="problem-solution">
+                        <div class="solution-input">
+                            <input type="number" step="0.01" placeholder="Ваш ответ">
+                            <button class="check-btn">Проверить</button>
+                        </div>
+                        <div class="solution-feedback"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Задача 5 -->
+            <div class="problem-card" data-difficulty="hard">
+                <div class="problem-header">
+                    <span class="problem-number">Задача 5</span>
+                    <span class="difficulty hard">Сложная</span>
+                </div>
+                <div class="problem-content">
+                    <p>Вычислите двугранный угол додекаэдра (угол между соседними гранями).</p>
+                    <div class="hint-container">
+                        <button class="hint-btn"><i class="fas fa-lightbulb"></i> Показать подсказку</button>
+                        <div class="problem-hint hidden">
+                            <p>Подсказка: Двугранный угол додекаэдра не зависит от размера и равен \(\cos^{-1}(-\frac{1}{\sqrt{5}})\).</p>
+                        </div>
+                    </div>
+                    <div class="problem-solution">
+                        <div class="solution-input">
+                            <input type="number" step="0.01" placeholder="Ваш ответ в градусах">
+                            <button class="check-btn">Проверить</button>
+                        </div>
+                        <div class="solution-feedback"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Задача 6 -->
+            <div class="problem-card" data-difficulty="hard">
+                <div class="problem-header">
+                    <span class="problem-number">Задача 6</span>
+                    <span class="difficulty hard">Сложная</span>
+                </div>
+                <div class="problem-content">
+                    <p>Додекаэдр вписан в куб так, что каждая вершина додекаэдра лежит на одной из граней куба. Если объем куба равен 1000 см³, найдите объем додекаэдра.</p>
+                    <div class="hint-container">
+                        <button class="hint-btn"><i class="fas fa-lightbulb"></i> Показать подсказку</button>
+                        <div class="problem-hint hidden">
+                            <p>Подсказка: Это сложная геометрическая задача. Вам нужно найти отношение объемов додекаэдра и куба в такой конфигурации.</p>
+                        </div>
+                    </div>
+                    <div class="problem-solution">
+                        <div class="solution-input">
+                            <input type="number" step="0.01" placeholder="Ваш ответ">
+                            <button class="check-btn">Проверить</button>
+                        </div>
+                        <div class="solution-feedback"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>О проекте</h3>
+                <p>Этот сайт создан для изучения додекаэдра и его математических свойств.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Навигация</h3>
+                <ul>
+                    <li><a href="index.html#model">3D Модель</a></li>
+                    <li><a href="index.html#history">История</a></li>
+                    <li><a href="index.html#calculator">Калькулятор</a></li>
+                    <li><a href="problems.html">Задачи</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Ресурсы</h3>
+                <ul>
+                    <li><a href="https://en.wikipedia.org/wiki/Dodecahedron" target="_blank">Википедия</a></li>
+                    <li><a href="https://mathworld.wolfram.com/Dodecahedron.html" target="_blank">Wolfram MathWorld</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html> 
