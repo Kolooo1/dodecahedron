@@ -1094,56 +1094,22 @@ footer {
 @media (max-width: 768px) {
     header {
         padding: 0.6rem 1rem;
-        flex-wrap: wrap;
-        justify-content: space-between;
-    }
-    
-    .logo {
-        flex: 0 0 auto;
     }
 
     .logo span {
-        font-size: 1.1rem;
-        max-width: 120px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-    
-    nav {
-        order: 3;
-        width: 100%;
-        margin-top: 0.5rem;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-        scrollbar-width: none; /* Firefox */
-        -ms-overflow-style: none; /* IE and Edge */
-    }
-    
-    nav::-webkit-scrollbar {
-        display: none; /* Chrome, Safari and Opera */
+        display: none;
     }
 
     nav ul {
-        gap: 1rem;
-        padding-bottom: 0.3rem;
-        flex-wrap: nowrap;
-        width: max-content;
-        min-width: 100%;
+        gap: 0.8rem;
     }
 
     nav a {
         font-size: 0.9rem;
-        white-space: nowrap;
     }
 
     .theme-toggle {
         margin-left: 0.5rem;
-        flex: 0 0 auto;
-    }
-    
-    .language-toggle {
-        flex: 0 0 auto;
     }
 
     .theme-toggle i {
@@ -1223,21 +1189,8 @@ footer {
 }
 
 @media (max-width: 576px) {
-    header {
-        padding: 0.5rem 0.8rem;
-    }
-    
-    .logo i {
-        font-size: 1.5rem;
-    }
-    
-    .logo span {
-        font-size: 1rem;
-        max-width: 100px;
-    }
-    
     nav ul {
-        gap: 0.8rem;
+        gap: 0.5rem;
     }
     
     nav a {

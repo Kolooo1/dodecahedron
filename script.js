@@ -1006,57 +1006,38 @@ function setupSplashScreen() {
 function initScrollHeader() {
     let lastScroll = 0;
     const header = document.querySelector('header');
-    const scrollThreshold = 50; // Порог прокрутки для скрытия хедера
-    let ticking = false; // Флаг для throttling
+    const scrollThreshold = 50; // Уменьшаем порог прокрутки для более быстрого скрытия
     
     // Добавляем атрибут для начальной высоты хедера
     const headerHeight = header.offsetHeight;
     document.documentElement.style.setProperty('--header-height', `${headerHeight}px`);
     
     window.addEventListener('scroll', () => {
-        // Применяем throttling для оптимизации производительности
-        if (!ticking) {
-            window.requestAnimationFrame(() => {
-                const currentScroll = window.pageYOffset;
-                
-                // Если прокручено меньше порогового значения, показываем хедер
-                if (currentScroll <= scrollThreshold) {
-                    header.style.transform = 'translateY(0)';
-                    header.classList.remove('scrolled-down');
-                    header.classList.add('scrolled-up');
-                } 
-                // Если скролл вниз и разница больше 5px - скрываем хедер
-                else if (currentScroll > lastScroll + 5 && !header.classList.contains('scrolled-down')) {
-                    header.style.transform = `translateY(-${headerHeight}px)`;
-                    header.classList.add('scrolled-down');
-                    header.classList.remove('scrolled-up');
-                } 
-                // Если скролл вверх и разница больше 5px - показываем хедер
-                else if (lastScroll > currentScroll + 5 && header.classList.contains('scrolled-down')) {
-                    header.style.transform = 'translateY(0)';
-                    header.classList.remove('scrolled-down');
-                    header.classList.add('scrolled-up');
-                }
-                
-                lastScroll = currentScroll;
-                ticking = false;
-            });
-            
-            ticking = true;
+        const currentScroll = window.pageYOffset;
+        
+        // Если прокручено меньше порогового значения, показываем хедер
+        if (currentScroll <= scrollThreshold) {
+            header.style.transform = 'translateY(0)';
+            header.classList.remove('scrolled-down');
+            header.classList.add('scrolled-up');
+            return;
         }
-    }, { passive: true }); // Добавляем passive: true для лучшей производительности
-    
-    // Пересчитываем высоту хедера при изменении размера окна
-    window.addEventListener('resize', () => {
-        if (!ticking) {
-            window.requestAnimationFrame(() => {
-                const headerHeight = header.offsetHeight;
-                document.documentElement.style.setProperty('--header-height', `${headerHeight}px`);
-                ticking = false;
-            });
-            ticking = true;
+        
+        // Если скролл вниз и разница больше 5px - скрываем хедер
+        if (currentScroll > lastScroll + 5 && !header.classList.contains('scrolled-down')) {
+            header.style.transform = `translateY(-${headerHeight}px)`;
+            header.classList.add('scrolled-down');
+            header.classList.remove('scrolled-up');
+        } 
+        // Если скролл вверх и разница больше 5px - показываем хедер
+        else if (lastScroll > currentScroll + 5 && header.classList.contains('scrolled-down')) {
+            header.style.transform = 'translateY(0)';
+            header.classList.remove('scrolled-down');
+            header.classList.add('scrolled-up');
         }
-    }, { passive: true });
+        
+        lastScroll = currentScroll;
+    });
 }
 
 // Инициализация после загрузки DOM
