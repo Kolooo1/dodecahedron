@@ -389,14 +389,23 @@ function initLanguageToggle() {
             // Раздел мемов
             memesTitle: 'Мемы о додекаэдре',
             geometricHumor: 'Геометрический юмор',
+            geometricHumorContent: 'У додекаэдра 12 граней, но ни одной для селфи.',
             alwaysOnTime: 'Всегда вовремя',
+            alwaysOnTimeContent: 'Почему додекаэдр никогда не опаздывает? Потому что у него всегда 20 точек сбора!',
             inTheBar: 'В баре',
+            inTheBarContent: 'Додекаэдр заходит в бар. Бармен: "Извините, мы не обслуживаем платоновы тела". Додекаэдр: "Это дискриминация! У меня просто много граней!"',
             gameEnthusiast: 'Игровой энтузиаст',
+            gameEnthusiastContent: 'Какая любимая игра у додекаэдра? 12-сторонние шахматы.',
             inTheGym: 'В спортзале',
+            inTheGymContent: 'Додекаэдр в спортзале: "Хочу убрать лишние грани, но тренер говорит, что я и так идеален!"',
             inTheCafe: 'В кафе',
+            inTheCafeContent: 'Тетраэдр, куб и додекаэдр сидят в кафе. Тетраэдр говорит: "Мне так сложно находить общий язык с другими фигурами, я такой угловатый". Куб отвечает: "Ты просто мыслишь слишком квадратно". Додекаэдр: "Ребята, у меня на эту тему есть 12 разных точек зрения".',
             interview: 'Интервью',
+            interviewContent: 'Додекаэдр пришел на собеседование. HR-менеджер: "Расскажите о ваших сильных сторонах". Додекаэдр: "У меня их ровно 30!"',
             realCompliment: 'Настоящий комплимент',
+            realComplimentContent: 'Что сказал один додекаэдр другому? "Ты выглядишь сегодня многогранно!"',
             atMathConference: 'На математической конференции',
+            atMathConferenceContent: 'Додекаэдр выступает на математической конференции: "Я не хочу казаться самонадеянным, но у других фигур просто не хватает граней, чтобы понять мою теорию".',
         },
         en: {
             // Navigation and header
@@ -776,18 +785,16 @@ function initLanguageToggle() {
                 memeCards[7].querySelector('h3').textContent = translations[language].realCompliment;
                 memeCards[8].querySelector('h3').textContent = translations[language].atMathConference;
                 
-                // Перевод содержимого мемов
-                if (language === 'en') {
-                    memeCards[0].querySelector('p').textContent = translations[language].geometricHumorContent;
-                    memeCards[1].querySelector('p').textContent = translations[language].alwaysOnTimeContent;
-                    memeCards[2].querySelector('p').textContent = translations[language].inTheBarContent;
-                    memeCards[3].querySelector('p').textContent = translations[language].gameEnthusiastContent;
-                    memeCards[4].querySelector('p').textContent = translations[language].inTheGymContent;
-                    memeCards[5].querySelector('p').textContent = translations[language].inTheCafeContent;
-                    memeCards[6].querySelector('p').textContent = translations[language].interviewContent;
-                    memeCards[7].querySelector('p').textContent = translations[language].realComplimentContent;
-                    memeCards[8].querySelector('p').textContent = translations[language].atMathConferenceContent;
-                }
+                // Перевод содержимого мемов для обоих языков
+                memeCards[0].querySelector('p').textContent = translations[language].geometricHumorContent;
+                memeCards[1].querySelector('p').textContent = translations[language].alwaysOnTimeContent;
+                memeCards[2].querySelector('p').textContent = translations[language].inTheBarContent;
+                memeCards[3].querySelector('p').textContent = translations[language].gameEnthusiastContent;
+                memeCards[4].querySelector('p').textContent = translations[language].inTheGymContent;
+                memeCards[5].querySelector('p').textContent = translations[language].inTheCafeContent;
+                memeCards[6].querySelector('p').textContent = translations[language].interviewContent;
+                memeCards[7].querySelector('p').textContent = translations[language].realComplimentContent;
+                memeCards[8].querySelector('p').textContent = translations[language].atMathConferenceContent;
             }
         }
 
