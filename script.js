@@ -657,52 +657,53 @@ function initLanguageToggle() {
                 const categoryTitles = formulasSection.querySelectorAll('.formula-category h3');
                 const formulaCards = formulasSection.querySelectorAll('.formula-card');
                 
-                if (formulasTitle) formulasTitle.textContent = translations[language].calculatorTitle;
+                if (formulasTitle) formulasTitle.textContent = translations[language].formulasTitle;
                 
                 if (categoryTitles.length >= 3) {
-                    categoryTitles[0].textContent = translations[language].parametersTitle;
-                    categoryTitles[1].textContent = translations[language].resultsTitle;
-                    categoryTitles[2].textContent = translations[language].resultsTitle;
+                    categoryTitles[0].textContent = translations[language].basicCharacteristics;
+                    categoryTitles[1].textContent = translations[language].additionalCharacteristics;
+                    categoryTitles[2].textContent = translations[language].derivedValues;
                 }
                 
                 if (formulaCards.length >= 12) {
                     // Основные характеристики
-                    formulaCards[0].querySelector('h4').textContent = translations[language].edgeLabel;
-                    formulaCards[0].querySelector('.formula-description').textContent = translations[language].edgeDescription;
+                    formulaCards[0].querySelector('h4').textContent = translations[language].volumeFormula;
+                    formulaCards[0].querySelector('.formula-description').textContent = translations[language].whereEdge;
                     
-                    formulaCards[1].querySelector('h4').textContent = translations[language].volumeLabel;
-                    formulaCards[1].querySelector('.formula-description').textContent = translations[language].volumeDescription;
+                    formulaCards[1].querySelector('h4').textContent = translations[language].surfaceAreaFormula;
+                    formulaCards[1].querySelector('.formula-description').textContent = translations[language].whereEdge;
                     
-                    formulaCards[2].querySelector('h4').textContent = translations[language].inscribedLabel;
-                    formulaCards[2].querySelector('.formula-description').textContent = translations[language].inscribedDescription;
+                    formulaCards[2].querySelector('h4').textContent = translations[language].inscribedRadiusFormula;
+                    formulaCards[2].querySelector('.formula-description').textContent = translations[language].whereEdge;
                     
-                    formulaCards[3].querySelector('h4').textContent = translations[language].circumscribedLabel;
-                    formulaCards[3].querySelector('.formula-description').textContent = translations[language].circumscribedDescription;
+                    formulaCards[3].querySelector('h4').textContent = translations[language].circumscribedRadiusFormula;
+                    formulaCards[3].querySelector('.formula-description').textContent = translations[language].whereEdge;
                     
                     // Дополнительные характеристики
-                    formulaCards[4].querySelector('h4').textContent = translations[language].surfaceLabel;
-                    formulaCards[4].querySelector('.formula-description').textContent = translations[language].surfaceDescription;
+                    formulaCards[4].querySelector('h4').textContent = translations[language].dihedralAngleFormula;
+                    formulaCards[4].querySelector('.formula-description').textContent = translations[language].dihedralAngleDescription;
                     
-                    formulaCards[5].querySelector('h4').textContent = translations[language].calculateButton;
-                    formulaCards[5].querySelector('.formula-description').textContent = translations[language].calculateDescription;
+                    formulaCards[5].querySelector('h4').textContent = translations[language].centerToFaceFormula;
+                    formulaCards[5].querySelector('.formula-description').textContent = translations[language].whereEdge;
                     
-                    formulaCards[6].querySelector('h4').textContent = translations[language].resultsTitle;
-                    formulaCards[6].querySelector('.formula-description').textContent = translations[language].resultsDescription;
+                    formulaCards[6].querySelector('h4').textContent = translations[language].faceAreaFormula;
+                    formulaCards[6].querySelector('.formula-description').textContent = translations[language].whereEdge;
                     
-                    formulaCards[7].querySelector('h4').textContent = translations[language].edgeResult;
-                    formulaCards[7].querySelector('.formula-description').textContent = translations[language].edgeResultDescription;
+                    formulaCards[7].querySelector('h4').textContent = translations[language].faceDiagonalFormula;
+                    formulaCards[7].querySelector('.formula-description').textContent = translations[language].whereEdge;
                     
-                    formulaCards[8].querySelector('h4').textContent = translations[language].volumeResult;
-                    formulaCards[8].querySelector('.formula-description').textContent = translations[language].volumeResultDescription;
+                    // Производные величины
+                    formulaCards[8].querySelector('h4').textContent = translations[language].edgeFromVolumeFormula;
+                    formulaCards[8].querySelector('.formula-description').textContent = translations[language].whereVolume;
                     
-                    formulaCards[9].querySelector('h4').textContent = translations[language].surfaceResult;
-                    formulaCards[9].querySelector('.formula-description').textContent = translations[language].surfaceResultDescription;
+                    formulaCards[9].querySelector('h4').textContent = translations[language].edgeFromSurfaceFormula;
+                    formulaCards[9].querySelector('.formula-description').textContent = translations[language].whereSurface;
                     
-                    formulaCards[10].querySelector('h4').textContent = translations[language].circumscribedResult;
-                    formulaCards[10].querySelector('.formula-description').textContent = translations[language].circumscribedResultDescription;
+                    formulaCards[10].querySelector('h4').textContent = translations[language].edgeFromCircumscribedFormula;
+                    formulaCards[10].querySelector('.formula-description').textContent = translations[language].whereCircumscribed;
                     
-                    formulaCards[11].querySelector('h4').textContent = translations[language].inscribedResult;
-                    formulaCards[11].querySelector('.formula-description').textContent = translations[language].inscribedResultDescription;
+                    formulaCards[11].querySelector('h4').textContent = translations[language].edgeFromInscribedFormula;
+                    formulaCards[11].querySelector('.formula-description').textContent = translations[language].whereInscribed;
                 }
                 
                 // После перевода формул запускаем рендеринг MathJax
