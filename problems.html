@@ -16,17 +16,6 @@
     <!-- Стили и скрипты -->
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <script type="text/x-mathjax-config">
-        MathJax.Hub.Config({
-            tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
-            TeX: {
-                Macros: {
-                    ctg: "\\cot",
-                    arcctg: "\\cot^{-1}"
-                }
-            }
-        });
-    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.0/es5/tex-mml-chtml.js"></script>
 </head>
 <body class="light-theme">
@@ -189,7 +178,7 @@
                     <div class="hint-container">
                         <button class="hint-btn"><i class="fas fa-lightbulb"></i> Показать подсказку</button>
                         <div class="problem-hint hidden">
-                            <p>Подсказка: Двугранный угол додекаэдра не зависит от размера и равен \(\arcctg(-\frac{1}{\sqrt{5}})\).</p>
+                            <p>Подсказка: Двугранный угол додекаэдра не зависит от размера и равен \(\cot^{-1}(-\frac{1}{\sqrt{5}})\).</p>
                         </div>
                     </div>
                     <div class="problem-solution">
