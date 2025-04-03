@@ -883,73 +883,126 @@ function initThemeToggle() {
 // === 3D МОДЕЛЬ ДОДЕКАЭДРА ===
 
 /**
- * Инициализирует 3D сцену и модель додекаэдра
+ * Инициализирует 3D модель додекаэдра с помощью Three.js
  */
-function initDodecahedronModel() {
-    // Получаем контейнер и его размеры
-    const container = document.getElementById('dodecahedron-model');
-    const width = container.clientWidth;
-    const height = container.clientHeight;
-    
-    // Создаем сцену, камеру и рендерер
+function initThreeJS() {
+    // Настройка сцены, камеры и рендерера
     scene = new THREE.Scene();
-    camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
     
-    renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    renderer.setSize(width, height);
+    // Настраиваем перспективную камеру с меньшим углом обзора для более естественного вида
+    // Уменьшаем угол обзора с 75 до 50 градусов, чтобы уменьшить перспективные искажения
+    const container = document.getElementById('dodecahedron-model');
+    if (!container) return;
+    
+    const containerWidth = container.clientWidth;
+    const containerHeight = container.clientHeight || containerWidth;
+    const aspectRatio = containerWidth / containerHeight;
+    
+    camera = new THREE.PerspectiveCamera(50, aspectRatio, 0.1, 1000);
+    
+    // Создаём рендерер с прозрачным фоном и лучшим качеством
+    renderer = new THREE.WebGLRenderer({ 
+        antialias: true, 
+        alpha: true,
+        precision: 'highp'
+    });
+    
+    renderer.setSize(containerWidth, containerHeight);
     renderer.setPixelRatio(window.devicePixelRatio);
     container.appendChild(renderer.domElement);
     
-    // Добавляем освещение
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
-    scene.add(ambientLight);
-    
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
-    directionalLight.position.set(5, 10, 7);
-    scene.add(directionalLight);
-    
-    // Создаем геометрию додекаэдра
-    const geometry = new THREE.DodecahedronGeometry(2, 0);
-    const material = new THREE.MeshPhongMaterial({
-        color: 0x3498db,
-        flatShading: true,
-        polygonOffset: true,
-        polygonOffsetFactor: 1,
-        polygonOffsetUnits: 1
-    });
-    
-    // Создаем каркас
-    const wireframeMaterial = new THREE.LineBasicMaterial({ color: 0x000000, linewidth: 1 });
-    const edges = new THREE.EdgesGeometry(geometry);
-    const wireframe = new THREE.LineSegments(edges, wireframeMaterial);
-    
-    // Создаем додекаэдр и добавляем каркас
-    dodecahedron = new THREE.Mesh(geometry, material);
-    dodecahedron.add(wireframe);
-    wireframe.visible = false; // Изначально каркас невидим
-    scene.add(dodecahedron);
-    
-    // Устанавливаем позицию камеры
-    camera.position.z = 6;
-    
-    // Добавляем контроллер орбиты для взаимодействия с мышью
+    // Добавляем OrbitControls для интерактивности
     controls = new THREE.OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
-    controls.dampingFactor = 0.1;
+    controls.dampingFactor = 0.05;
+    controls.rotateSpeed = 0.8;
+    controls.enableZoom = true;
+    controls.minDistance = 2;
+    controls.maxDistance = 10;
     
-    // Начинаем анимацию
-    animate();
+    // Создаем додекаэдр с немного большим радиусом
+    const geometry = new THREE.DodecahedronGeometry(1.5, 0);
+    const material = new THREE.MeshStandardMaterial({
+        color: 0x3498db,
+        roughness: 0.5,
+        metalness: 0.2,
+        flatShading: true
+    });
     
-    // Обработчик изменения размера окна
-    window.addEventListener('resize', () => {
-        const width = container.clientWidth;
-        const height = container.clientHeight;
+    // Используем более точную геометрию для каркаса
+    const edgesGeometry = new THREE.EdgesGeometry(geometry);
+    const wireframeMaterial = new THREE.LineBasicMaterial({
+        color: 0xffffff,
+        linewidth: 1
+    });
+    const wireframe = new THREE.LineSegments(edgesGeometry, wireframeMaterial);
+    
+    // Создаем основной меш и добавляем каркас как дочерний объект
+    dodecahedron = new THREE.Mesh(geometry, material);
+    dodecahedron.add(wireframe);
+    
+    // По умолчанию каркас скрыт
+    wireframe.visible = isWireframe;
+    
+    // Устанавливаем начальное вращение для лучшего отображения додекаэдра
+    dodecahedron.rotation.x = Math.PI / 6;
+    dodecahedron.rotation.y = Math.PI / 4;
+    
+    // Добавляем додекаэдр на сцену
+    scene.add(dodecahedron);
+    
+    // Улучшаем освещение для лучшего объема фигуры
+    // Добавляем более мягкий ambient свет
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+    scene.add(ambientLight);
+    
+    // Добавляем направленный свет спереди сверху
+    const directionalLight1 = new THREE.DirectionalLight(0xffffff, 0.5);
+    directionalLight1.position.set(5, 5, 5);
+    scene.add(directionalLight1);
+    
+    // Добавляем направленный свет снизу слева для контраста
+    const directionalLight2 = new THREE.DirectionalLight(0xffffff, 0.3);
+    directionalLight2.position.set(-5, -2, -3);
+    scene.add(directionalLight2);
+    
+    // Устанавливаем позицию камеры дальше от объекта для более правильного перспективного вида
+    camera.position.set(0, 0, 5);
+    camera.lookAt(0, 0, 0);
+    
+    // Настройка адаптивного размера модели
+    function onWindowResize() {
+        const containerWidth = container.clientWidth;
+        const containerHeight = container.clientHeight || containerWidth;
         
-        camera.aspect = width / height;
+        camera.aspect = containerWidth / containerHeight;
         camera.updateProjectionMatrix();
         
-        renderer.setSize(width, height);
-    });
+        renderer.setSize(containerWidth, containerHeight);
+    }
+    
+    window.addEventListener('resize', onWindowResize);
+    
+    // Функция анимации
+    function animate() {
+        requestAnimationFrame(animate);
+        
+        // Вращаем додекаэдр, если активировано вращение
+        if (isRotating) {
+            // Уменьшаем скорость вращения для более плавного эффекта
+            dodecahedron.rotation.x += 0.003;
+            dodecahedron.rotation.y += 0.005;
+        }
+        
+        // Обновляем OrbitControls
+        controls.update();
+        
+        // Рендерим сцену
+        renderer.render(scene, camera);
+    }
+    
+    // Запускаем анимацию
+    animate();
 }
 
 /**
@@ -1350,108 +1403,6 @@ function initSmoothScroll() {
             }
         });
     });
-}
-
-/**
- * Инициализирует 3D модель додекаэдра с помощью Three.js
- */
-function initThreeJS() {
-    // Настройка сцены, камеры и рендерера
-    scene = new THREE.Scene();
-    camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
-    
-    // Создаём рендерер с прозрачным фоном
-    renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    
-    // Настраиваем размер рендерера и добавляем его в DOM
-    const container = document.getElementById('dodecahedron-model');
-    if (!container) return;
-    
-    const containerWidth = container.clientWidth;
-    const containerHeight = container.clientHeight || containerWidth;
-    
-    renderer.setSize(containerWidth, containerHeight);
-    container.appendChild(renderer.domElement);
-    
-    // Добавляем OrbitControls для интерактивности
-    controls = new THREE.OrbitControls(camera, renderer.domElement);
-    controls.enableDamping = true;
-    controls.dampingFactor = 0.05;
-    
-    // Создаем додекаэдр
-    const geometry = new THREE.DodecahedronGeometry(1, 0);
-    const material = new THREE.MeshStandardMaterial({
-        color: 0x3498db,
-        roughness: 0.6,
-        metalness: 0.3,
-        flatShading: true
-    });
-    
-    // Создаем каркас для додекаэдра
-    const wireframeGeometry = new THREE.WireframeGeometry(geometry);
-    const wireframeMaterial = new THREE.LineBasicMaterial({
-        color: 0xffffff,
-        linewidth: 1
-    });
-    const wireframe = new THREE.LineSegments(wireframeGeometry, wireframeMaterial);
-    
-    // Создаем основной меш и добавляем каркас как дочерний объект
-    dodecahedron = new THREE.Mesh(geometry, material);
-    dodecahedron.add(wireframe);
-    
-    // По умолчанию каркас скрыт
-    wireframe.visible = isWireframe;
-    
-    // Добавляем додекаэдр на сцену
-    scene.add(dodecahedron);
-    
-    // Добавляем освещение
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
-    scene.add(ambientLight);
-    
-    const directionalLight1 = new THREE.DirectionalLight(0xffffff, 0.6);
-    directionalLight1.position.set(1, 1, 1);
-    scene.add(directionalLight1);
-    
-    const directionalLight2 = new THREE.DirectionalLight(0xffffff, 0.6);
-    directionalLight2.position.set(-1, -1, -1);
-    scene.add(directionalLight2);
-    
-    // Устанавливаем позицию камеры и целевую точку просмотра
-    camera.position.z = 3;
-    
-    // Настройка адаптивного размера модели
-    function onWindowResize() {
-        const containerWidth = container.clientWidth;
-        const containerHeight = container.clientHeight || containerWidth;
-        
-        camera.aspect = containerWidth / containerHeight;
-        camera.updateProjectionMatrix();
-        
-        renderer.setSize(containerWidth, containerHeight);
-    }
-    
-    window.addEventListener('resize', onWindowResize);
-    
-    // Функция анимации
-    function animate() {
-        requestAnimationFrame(animate);
-        
-        // Вращаем додекаэдр, если активировано вращение
-        if (isRotating) {
-            dodecahedron.rotation.x += 0.005;
-            dodecahedron.rotation.y += 0.007;
-        }
-        
-        // Обновляем OrbitControls
-        controls.update();
-        
-        // Рендерим сцену
-        renderer.render(scene, camera);
-    }
-    
-    // Запускаем анимацию
-    animate();
 }
 
 /**
