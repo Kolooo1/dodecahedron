@@ -285,6 +285,7 @@ function initLanguageToggle() {
             historyLink: 'История',
             calculatorLink: 'Калькулятор',
             formulasLink: 'Формулы',
+            memesLink: 'Мемы',
             problemsLink: 'Задачи',
             logoText: 'Додекаэдр',
             
@@ -384,6 +385,17 @@ function initLanguageToggle() {
             whereCircumscribed: 'где \\(R\\) - радиус описанной сферы',
             whereInscribed: 'где \\(r\\) - радиус вписанной сферы',
             dihedralAngleDescription: 'Угол между соседними гранями додекаэдра',
+            
+            // Раздел мемов
+            memesTitle: 'Мемы о додекаэдре',
+            geometricHumor: 'Геометрический юмор',
+            alwaysOnTime: 'Всегда вовремя',
+            inTheBar: 'В баре',
+            gameEnthusiast: 'Игровой энтузиаст',
+            inTheGym: 'В спортзале',
+            inTheCafe: 'В кафе',
+            interview: 'Интервью',
+            realCompliment: 'Настоящий комплимент',
         },
         en: {
             // Navigation and header
@@ -391,6 +403,7 @@ function initLanguageToggle() {
             historyLink: 'History',
             calculatorLink: 'Calculator',
             formulasLink: 'Formulas',
+            memesLink: 'Memes',
             problemsLink: 'Problems',
             logoText: 'Dodecahedron',
             
@@ -490,6 +503,17 @@ function initLanguageToggle() {
             whereCircumscribed: 'where \\(R\\) is the circumscribed sphere radius',
             whereInscribed: 'where \\(r\\) is the inscribed sphere radius',
             dihedralAngleDescription: 'Angle between adjacent faces of the dodecahedron',
+            
+            // Memes section
+            memesTitle: 'Dodecahedron Memes',
+            geometricHumor: 'Geometric Humor',
+            alwaysOnTime: 'Always on Time',
+            inTheBar: 'In the Bar',
+            gameEnthusiast: 'Game Enthusiast',
+            inTheGym: 'In the Gym',
+            inTheCafe: 'In the Cafe',
+            interview: 'Interview',
+            realCompliment: 'Real Compliment',
         }
     };
     
@@ -529,8 +553,11 @@ function initLanguageToggle() {
             // Раздел с формулами
             navigationItems[3].textContent = translations[language].formulasLink;
             
+            // Раздел с мемами
+            navigationItems[4].textContent = translations[language].memesLink;
+            
             // Раздел с задачами
-            navigationItems[4].textContent = translations[language].problemsLink;
+            navigationItems[5].textContent = translations[language].problemsLink;
         }
         
         // === ГЛАВНАЯ СТРАНИЦА ===
@@ -710,6 +737,28 @@ function initLanguageToggle() {
                 if (typeof MathJax !== 'undefined') {
                     MathJax.typeset();
                 }
+            }
+        }
+        
+        // Раздел с мемами
+        const memesSection = document.getElementById('memes');
+        if (memesSection) {
+            const memesTitle = memesSection.querySelector('h2');
+            const memeCards = memesSection.querySelectorAll('.meme-card');
+            
+            if (memesTitle) memesTitle.textContent = translations[language].memesTitle;
+            
+            if (memeCards.length >= 8) {
+                memeCards[0].querySelector('h3').textContent = translations[language].geometricHumor;
+                memeCards[1].querySelector('h3').textContent = translations[language].alwaysOnTime;
+                memeCards[2].querySelector('h3').textContent = translations[language].inTheBar;
+                memeCards[3].querySelector('h3').textContent = translations[language].gameEnthusiast;
+                memeCards[4].querySelector('h3').textContent = translations[language].inTheGym;
+                memeCards[5].querySelector('h3').textContent = translations[language].inTheCafe;
+                memeCards[6].querySelector('h3').textContent = translations[language].interview;
+                memeCards[7].querySelector('h3').textContent = translations[language].realCompliment;
+                
+                // Содержимое мемов остается на языке оригинала (не переводим шутки для сохранения юмора)
             }
         }
     }
