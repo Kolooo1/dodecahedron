@@ -396,6 +396,7 @@ function initLanguageToggle() {
             inTheCafe: 'В кафе',
             interview: 'Интервью',
             realCompliment: 'Настоящий комплимент',
+            atMathConference: 'На математической конференции',
         },
         en: {
             // Navigation and header
@@ -514,6 +515,7 @@ function initLanguageToggle() {
             inTheCafe: 'In the Cafe',
             interview: 'Interview',
             realCompliment: 'Real Compliment',
+            atMathConference: 'At a Math Conference',
         }
     };
     
@@ -748,7 +750,7 @@ function initLanguageToggle() {
             
             if (memesTitle) memesTitle.textContent = translations[language].memesTitle;
             
-            if (memeCards.length >= 8) {
+            if (memeCards.length >= 9) {
                 memeCards[0].querySelector('h3').textContent = translations[language].geometricHumor;
                 memeCards[1].querySelector('h3').textContent = translations[language].alwaysOnTime;
                 memeCards[2].querySelector('h3').textContent = translations[language].inTheBar;
@@ -757,6 +759,7 @@ function initLanguageToggle() {
                 memeCards[5].querySelector('h3').textContent = translations[language].inTheCafe;
                 memeCards[6].querySelector('h3').textContent = translations[language].interview;
                 memeCards[7].querySelector('h3').textContent = translations[language].realCompliment;
+                memeCards[8].querySelector('h3').textContent = translations[language].atMathConference;
                 
                 // Содержимое мемов остается на языке оригинала (не переводим шутки для сохранения юмора)
             }
