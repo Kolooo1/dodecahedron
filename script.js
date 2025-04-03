@@ -1006,38 +1006,57 @@ function setupSplashScreen() {
 function initScrollHeader() {
     let lastScroll = 0;
     const header = document.querySelector('header');
-    const scrollThreshold = 50; // Уменьшаем порог прокрутки для более быстрого скрытия
+    const scrollThreshold = 50; // Порог прокрутки для скрытия хедера
+    let ticking = false; // Флаг для throttling
     
     // Добавляем атрибут для начальной высоты хедера
     const headerHeight = header.offsetHeight;
     document.documentElement.style.setProperty('--header-height', `${headerHeight}px`);
     
     window.addEventListener('scroll', () => {
-        const currentScroll = window.pageYOffset;
-        
-        // Если прокручено меньше порогового значения, показываем хедер
-        if (currentScroll <= scrollThreshold) {
-            header.style.transform = 'translateY(0)';
-            header.classList.remove('scrolled-down');
-            header.classList.add('scrolled-up');
-            return;
+        // Применяем throttling для оптимизации производительности
+        if (!ticking) {
+            window.requestAnimationFrame(() => {
+                const currentScroll = window.pageYOffset;
+                
+                // Если прокручено меньше порогового значения, показываем хедер
+                if (currentScroll <= scrollThreshold) {
+                    header.style.transform = 'translateY(0)';
+                    header.classList.remove('scrolled-down');
+                    header.classList.add('scrolled-up');
+                } 
+                // Если скролл вниз и разница больше 5px - скрываем хедер
+                else if (currentScroll > lastScroll + 5 && !header.classList.contains('scrolled-down')) {
+                    header.style.transform = `translateY(-${headerHeight}px)`;
+                    header.classList.add('scrolled-down');
+                    header.classList.remove('scrolled-up');
+                } 
+                // Если скролл вверх и разница больше 5px - показываем хедер
+                else if (lastScroll > currentScroll + 5 && header.classList.contains('scrolled-down')) {
+                    header.style.transform = 'translateY(0)';
+                    header.classList.remove('scrolled-down');
+                    header.classList.add('scrolled-up');
+                }
+                
+                lastScroll = currentScroll;
+                ticking = false;
+            });
+            
+            ticking = true;
         }
-        
-        // Если скролл вниз и разница больше 5px - скрываем хедер
-        if (currentScroll > lastScroll + 5 && !header.classList.contains('scrolled-down')) {
-            header.style.transform = `translateY(-${headerHeight}px)`;
-            header.classList.add('scrolled-down');
-            header.classList.remove('scrolled-up');
-        } 
-        // Если скролл вверх и разница больше 5px - показываем хедер
-        else if (lastScroll > currentScroll + 5 && header.classList.contains('scrolled-down')) {
-            header.style.transform = 'translateY(0)';
-            header.classList.remove('scrolled-down');
-            header.classList.add('scrolled-up');
+    }, { passive: true }); // Добавляем passive: true для лучшей производительности
+    
+    // Пересчитываем высоту хедера при изменении размера окна
+    window.addEventListener('resize', () => {
+        if (!ticking) {
+            window.requestAnimationFrame(() => {
+                const headerHeight = header.offsetHeight;
+                document.documentElement.style.setProperty('--header-height', `${headerHeight}px`);
+                ticking = false;
+            });
+            ticking = true;
         }
-        
-        lastScroll = currentScroll;
-    });
+    }, { passive: true });
 }
 
 // Инициализация после загрузки DOM
@@ -1499,63 +1518,12 @@ function calculateInscribedRadius(a) {
     return DodecahedronConstants.INSCRIBED_RADIUS_COEFFICIENT * a;
 }
 
-/**
- * Инициализирует мобильное меню-бургер
- */
-function initMobileMenu() {
-    const menuToggle = document.getElementById('menu-toggle');
-    const mainNav = document.getElementById('main-nav');
-    const menuOverlay = document.getElementById('menu-overlay');
-    
-    if (!menuToggle || !mainNav || !menuOverlay) return;
-    
-    // Функция для переключения меню
-    function toggleMenu() {
-        menuToggle.classList.toggle('active');
-        mainNav.classList.toggle('active');
-        menuOverlay.classList.toggle('active');
-        
-        // Блокируем скролл страницы при открытом меню
-        if (mainNav.classList.contains('active')) {
-            document.body.style.overflow = 'hidden';
-        } else {
-            document.body.style.overflow = '';
-        }
-    }
-    
-    // Обработчик для кнопки меню
-    menuToggle.addEventListener('click', toggleMenu);
-    
-    // Закрытие меню при клике на затемнение
-    menuOverlay.addEventListener('click', toggleMenu);
-    
-    // Закрытие меню при клике на ссылку
-    const navLinks = mainNav.querySelectorAll('a');
-    navLinks.forEach(link => {
-        link.addEventListener('click', () => {
-            if (mainNav.classList.contains('active')) {
-                toggleMenu();
-            }
-        });
-    });
-    
-    // Закрытие меню при изменении размера окна
-    window.addEventListener('resize', () => {
-        if (window.innerWidth > 768 && mainNav.classList.contains('active')) {
-            toggleMenu();
-        }
-    });
-}
-
 // Функция для инициализации всех компонентов на странице
 function initComponents() {
     initSplashScreen();
     
     // Инициализируем хедер, скрывающийся при скролле
     initScrollHeader();
-    
-    // Инициализируем мобильное меню
-    initMobileMenu();
     
     // Инициализируем плавную прокрутку для якорных ссылок
     initSmoothScroll();
@@ -1582,4 +1550,98 @@ function initComponents() {
     if (document.querySelector('.problems-list')) {
         initProblemPage();
     }
+}
+
+/**
+ * Инициализирует сплеш-экран
+ */
+function initSplashScreen() {
+    const splashScreen = document.querySelector('.splash-screen');
+    if (!splashScreen) return;
+    
+    // Показываем сплеш-экран на короткое время
+    splashScreen.style.display = 'flex';
+    
+    // Через 1.5 сек скрываем сплеш-экран
+    setTimeout(() => {
+        splashScreen.classList.add('fade-out');
+        
+        // Полностью удаляем сплеш-экран через 500мс после начала анимации
+        setTimeout(() => {
+            splashScreen.style.display = 'none';
+        }, 500);
+    }, 1500);
+}
+
+/**
+ * Инициализирует плавную прокрутку для якорных ссылок
+ */
+function initSmoothScroll() {
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            
+            const targetId = this.getAttribute('href');
+            if (targetId === '#') return;
+            
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                targetElement.scrollIntoView({
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+}
+
+/**
+ * Инициализирует элементы управления 3D моделью
+ */
+function initModelControls() {
+    // Добавляем обработчики для кнопок управления моделью
+    const rotateButton = document.getElementById('rotate-toggle');
+    const wireframeButton = document.getElementById('wireframe-toggle');
+    const colorInput = document.getElementById('model-color');
+    
+    if (rotateButton) {
+        rotateButton.addEventListener('click', toggleRotation);
+        // Устанавливаем начальное состояние кнопки вращения
+        if (isRotating) {
+            rotateButton.classList.add('active');
+        }
+    }
+    
+    if (wireframeButton) {
+        wireframeButton.addEventListener('click', toggleWireframe);
+    }
+    
+    if (colorInput) {
+        colorInput.addEventListener('input', changeModelColor);
+    }
+}
+
+/**
+ * Инициализирует калькулятор свойств додекаэдра
+ */
+function initCalculator() {
+    const calculateButton = document.getElementById('calculate-btn');
+    if (calculateButton) {
+        calculateButton.addEventListener('click', calculateProperties);
+    }
+    
+    // Добавляем обработчики для чекбоксов параметров
+    document.querySelectorAll('.parameter-checkbox').forEach(checkbox => {
+        checkbox.addEventListener('change', handleParameterCheckboxChange);
+        
+        // Инициализируем начальное состояние
+        const event = new Event('change');
+        checkbox.dispatchEvent(event);
+    });
+    
+    // Устанавливаем начальные значения полей ввода на основе длины ребра = 1
+    const edgeLength = 1;
+    document.getElementById('volume-value').value = calculateVolume(edgeLength).toFixed(2);
+    document.getElementById('surface-value').value = calculateSurfaceArea(edgeLength).toFixed(2);
+    document.getElementById('circumscribed-value').value = calculateCircumscribedRadius(edgeLength).toFixed(2);
+    document.getElementById('inscribed-value').value = calculateInscribedRadius(edgeLength).toFixed(2);
 } 
