@@ -53,6 +53,7 @@
 }
 
 body {
+    padding-top: 70px; /* Примерная высота шапки */
     font-family: 'Roboto', 'Segoe UI', Arial, sans-serif;
     line-height: 1.6;
     color: var(--text-color);
@@ -89,19 +90,21 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    position: sticky;
+    position: fixed;
     top: 0;
     z-index: 1000;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     width: 100%;
 }
 
 /* Стили для прокрутки */
 header.scrolled-down {
+    transform: translateY(-100%);
     box-shadow: none;
 }
 
 header.scrolled-up {
+    transform: translateY(0);
     box-shadow: var(--shadow);
 }
 

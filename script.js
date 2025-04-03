@@ -508,14 +508,23 @@ function initLanguageToggle() {
             // Memes section
             memesTitle: 'Dodecahedron Memes',
             geometricHumor: 'Geometric Humor',
+            geometricHumorContent: 'A dodecahedron has 12 faces, but none suitable for a selfie.',
             alwaysOnTime: 'Always on Time',
+            alwaysOnTimeContent: 'Why is a dodecahedron never late? Because it always has 20 points on time!',
             inTheBar: 'In the Bar',
+            inTheBarContent: 'A dodecahedron walks into a bar. Bartender: "Sorry, we don\'t serve platonic solids here." Dodecahedron: "That\'s discrimination! I have too many faces!"',
             gameEnthusiast: 'Game Enthusiast',
+            gameEnthusiastContent: 'What\'s a dodecahedron\'s favorite game? 12-sided chess.',
             inTheGym: 'In the Gym',
+            inTheGymContent: 'Dodecahedron at the gym: "I want to lose some extra faces, but my trainer says I\'m already perfect!"',
             inTheCafe: 'In the Cafe',
+            inTheCafeContent: 'A tetrahedron, cube, and dodecahedron sit in a cafe. The tetrahedron says: "It\'s so hard for me to connect with other shapes, I\'m too pointy." The cube replies: "You\'re just thinking too square." Dodecahedron: "Guys, I have 12 different perspectives on this topic."',
             interview: 'Interview',
+            interviewContent: 'A dodecahedron came to a job interview. HR manager: "Tell me about your strengths." Dodecahedron: "I have exactly 30 of them!"',
             realCompliment: 'Real Compliment',
+            realComplimentContent: 'What did one dodecahedron say to another? "You look quite multifaceted today!"',
             atMathConference: 'At a Math Conference',
+            atMathConferenceContent: 'A dodecahedron speaks at a math conference: "I don\'t want to sound presumptuous, but other shapes simply don\'t have enough faces to understand my theory."',
         }
     };
     
@@ -537,6 +546,12 @@ function initLanguageToggle() {
         // Обновляем текст кнопки переключателя языка
         const languageButton = document.getElementById('language-switch');
         languageButton.textContent = language === 'ru' ? 'EN' : 'RU';
+        
+        // Обновляем логотип
+        const logoText = document.querySelector('.logo span');
+        if (logoText) {
+            logoText.textContent = translations[language].logoText;
+        }
         
         // Получаем все элементы, которые требуют перевода
         // === НАВИГАЦИЯ ===
@@ -761,7 +776,41 @@ function initLanguageToggle() {
                 memeCards[7].querySelector('h3').textContent = translations[language].realCompliment;
                 memeCards[8].querySelector('h3').textContent = translations[language].atMathConference;
                 
-                // Содержимое мемов остается на языке оригинала (не переводим шутки для сохранения юмора)
+                // Перевод содержимого мемов
+                if (language === 'en') {
+                    memeCards[0].querySelector('p').textContent = translations[language].geometricHumorContent;
+                    memeCards[1].querySelector('p').textContent = translations[language].alwaysOnTimeContent;
+                    memeCards[2].querySelector('p').textContent = translations[language].inTheBarContent;
+                    memeCards[3].querySelector('p').textContent = translations[language].gameEnthusiastContent;
+                    memeCards[4].querySelector('p').textContent = translations[language].inTheGymContent;
+                    memeCards[5].querySelector('p').textContent = translations[language].inTheCafeContent;
+                    memeCards[6].querySelector('p').textContent = translations[language].interviewContent;
+                    memeCards[7].querySelector('p').textContent = translations[language].realComplimentContent;
+                    memeCards[8].querySelector('p').textContent = translations[language].atMathConferenceContent;
+                }
+            }
+        }
+
+        // Футер
+        const footer = document.querySelector('footer');
+        if (footer) {
+            const footerSections = footer.querySelectorAll('.footer-section h3');
+            const aboutText = footer.querySelector('.footer-section p');
+            const resourceLinks = footer.querySelectorAll('.footer-section:last-child a');
+            
+            if (footerSections.length >= 3) {
+                footerSections[0].textContent = translations[language].aboutProject;
+                footerSections[1].textContent = translations[language].navigationTitle;
+                footerSections[2].textContent = translations[language].resourcesTitle;
+            }
+            
+            if (aboutText) {
+                aboutText.textContent = translations[language].aboutText;
+            }
+            
+            if (resourceLinks.length >= 2) {
+                resourceLinks[0].textContent = translations[language].wikipediaLink;
+                resourceLinks[1].textContent = translations[language].mathworldLink;
             }
         }
     }
@@ -812,7 +861,7 @@ function setupSplashScreen() {
 function initScrollHeader() {
     let lastScroll = 0;
     const header = document.querySelector('header');
-    const scrollThreshold = 100; // Порог прокрутки для начала скрытия
+    const scrollThreshold = 50; // Уменьшаем порог прокрутки для более быстрого скрытия
     
     // Добавляем атрибут для начальной высоты хедера
     const headerHeight = header.offsetHeight;
@@ -824,17 +873,19 @@ function initScrollHeader() {
         // Если прокручено меньше порогового значения, показываем хедер
         if (currentScroll <= scrollThreshold) {
             header.style.transform = 'translateY(0)';
+            header.classList.remove('scrolled-down');
+            header.classList.add('scrolled-up');
             return;
         }
         
-        // Если скролл вниз - скрываем хедер
-        if (currentScroll > lastScroll && !header.classList.contains('scrolled-down')) {
+        // Если скролл вниз и разница больше 5px - скрываем хедер
+        if (currentScroll > lastScroll + 5 && !header.classList.contains('scrolled-down')) {
             header.style.transform = `translateY(-${headerHeight}px)`;
             header.classList.add('scrolled-down');
             header.classList.remove('scrolled-up');
         } 
-        // Если скролл вверх - показываем хедер
-        else if (currentScroll < lastScroll && header.classList.contains('scrolled-down')) {
+        // Если скролл вверх и разница больше 5px - показываем хедер
+        else if (lastScroll > currentScroll + 5 && header.classList.contains('scrolled-down')) {
             header.style.transform = 'translateY(0)';
             header.classList.remove('scrolled-down');
             header.classList.add('scrolled-up');
@@ -1356,35 +1407,6 @@ function initSplashScreen() {
             splashScreen.style.display = 'none';
         }, 500);
     }, 1500);
-}
-
-/**
- * Инициализирует скрытие хедера при скролле
- */
-function initScrollHeader() {
-    let lastScrollTop = 0;
-    const header = document.querySelector('header');
-    if (!header) return;
-    
-    window.addEventListener('scroll', () => {
-        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        
-        // Если скролл больше 100px, добавляем класс для тени
-        if (scrollTop > 100) {
-            header.classList.add('scrolled');
-        } else {
-            header.classList.remove('scrolled');
-        }
-        
-        // Скрываем хедер при скролле вниз и показываем при скролле вверх
-        if (scrollTop > lastScrollTop && scrollTop > 200) {
-            header.classList.add('header-hidden');
-        } else {
-            header.classList.remove('header-hidden');
-        }
-        
-        lastScrollTop = scrollTop;
-    });
 }
 
 /**
