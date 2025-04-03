@@ -820,6 +820,96 @@ function initLanguageToggle() {
                 resourceLinks[1].textContent = translations[language].mathworldLink;
             }
         }
+
+        // Страница задач (problems.html)
+        const problemsHeader = document.querySelector('.problems-header');
+        if (problemsHeader) {
+            const title = problemsHeader.querySelector('h2');
+            const subtitle = problemsHeader.querySelector('p');
+            
+            if (title) title.textContent = translations[language].problemsTitle;
+            if (subtitle) subtitle.textContent = translations[language].problemsSubtitle;
+            
+            // Переводим фильтры сложности
+            const difficultyFilters = document.querySelectorAll('.difficulty-btn');
+            if (difficultyFilters.length >= 4) {
+                difficultyFilters[0].textContent = translations[language].difficultyAll;
+                difficultyFilters[1].textContent = translations[language].difficultyEasy;
+                difficultyFilters[2].textContent = translations[language].difficultyMedium;
+                difficultyFilters[3].textContent = translations[language].difficultyHard;
+            }
+            
+            // Переводим карточки задач
+            const problemCards = document.querySelectorAll('.problem-card');
+            problemCards.forEach((card, index) => {
+                const problemNumber = card.querySelector('.problem-number');
+                const difficultyLabel = card.querySelector('.difficulty');
+                const hintButton = card.querySelector('.hint-btn');
+                const checkButton = card.querySelector('.check-btn');
+                const input = card.querySelector('input');
+                
+                if (problemNumber) {
+                    problemNumber.textContent = `${translations[language].problemPrefix} ${index + 1}`;
+                }
+                
+                if (difficultyLabel) {
+                    const difficulty = difficultyLabel.classList.contains('easy') ? translations[language].difficultyEasy :
+                                      difficultyLabel.classList.contains('medium') ? translations[language].difficultyMedium :
+                                      translations[language].difficultyHard;
+                    difficultyLabel.textContent = difficulty;
+                }
+                
+                if (hintButton) {
+                    const isHintShown = !hintButton.closest('.hint-container').querySelector('.problem-hint').classList.contains('hidden');
+                    if (isHintShown) {
+                        hintButton.innerHTML = `<i class="fas fa-times"></i> ${translations[language].hintHide}`;
+                    } else {
+                        hintButton.innerHTML = `<i class="fas fa-lightbulb"></i> ${translations[language].hintShow}`;
+                    }
+                }
+                
+                if (checkButton) {
+                    checkButton.textContent = translations[language].checkAnswer;
+                }
+                
+                if (input) {
+                    input.placeholder = translations[language].answerPlaceholder;
+                }
+            });
+            
+            // Обновляем отображение верных/неверных ответов
+            const feedbacks = document.querySelectorAll('.solution-feedback');
+            feedbacks.forEach(feedback => {
+                if (feedback.classList.contains('correct')) {
+                    feedback.textContent = translations[language].correctAnswer;
+                } else if (feedback.classList.contains('incorrect') && feedback.textContent) {
+                    if (feedback.textContent.includes('введите число') || feedback.textContent.includes('enter a number')) {
+                        feedback.textContent = translations[language].enterNumber;
+                    } else {
+                        feedback.textContent = translations[language].incorrectAnswer;
+                    }
+                }
+            });
+            
+            // Обновляем объект с сообщениями для страницы задач
+            window.problemMessages = {
+                enterNumber: translations[language].enterNumber,
+                correctAnswer: translations[language].correctAnswer,
+                incorrectAnswer: translations[language].incorrectAnswer
+            };
+            
+            // Переводим модальное окно достижения, если оно есть
+            const achievementModal = document.getElementById('achievement-modal');
+            if (achievementModal) {
+                const modalTitle = achievementModal.querySelector('h3');
+                const modalDescription = achievementModal.querySelector('p');
+                const modalButton = achievementModal.querySelector('button.achievement-accept');
+                
+                if (modalTitle) modalTitle.textContent = translations[language].achievementTitle;
+                if (modalDescription) modalDescription.textContent = translations[language].achievementDescription;
+                if (modalButton) modalButton.textContent = translations[language].achievementButton;
+            }
+        }
     }
     
     // Добавляем обработчик клика по кнопке переключения языка
