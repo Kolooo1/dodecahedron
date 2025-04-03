@@ -19,16 +19,6 @@
     <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/examples/js/controls/OrbitControls.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.0/es5/tex-mml-chtml.js"></script>
-    <script type="text/javascript">
-        window.MathJax = {
-            tex: {
-                macros: {
-                    ctg: "\\cot",
-                    arcctg: "\\operatorname{arccot}"
-                }
-            }
-        };
-    </script>
 </head>
 <body class="light-theme">
     <!-- Сплеш-экран -->
@@ -256,7 +246,7 @@
                         <div class="formula-card">
                             <h4>Двугранный угол</h4>
                             <div class="formula-content">
-                                <p class="formula-equation">\(\alpha = \arcctg(-\frac{1}{\sqrt{5}}) \approx 116.57°\)</p>
+                                <p class="formula-equation">\(\alpha = \cot^{-1}(-\frac{1}{\sqrt{5}}) \approx 116.57°\)</p>
                                 <p class="formula-description">Угол между соседними гранями додекаэдра</p>
                             </div>
                         </div>
@@ -270,7 +260,7 @@
                         <div class="formula-card">
                             <h4>Площадь грани (пятиугольника)</h4>
                             <div class="formula-content">
-                                <p class="formula-equation">S₁ = \(\frac{5}{4} \times a^2 \times \ctg(\frac{\pi}{5})\)</p>
+                                <p class="formula-equation">S₁ = \(\frac{5}{4} \times a^2 \times \cot(\frac{\pi}{5})\)</p>
                                 <p class="formula-description">где \(a\) - длина ребра додекаэдра</p>
                             </div>
                         </div>
