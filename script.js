@@ -454,207 +454,209 @@ function initLanguageToggle() {
     
     // Функция для перевода страницы
     function translatePage(language) {
-        // Обновляем текст сплеш-экрана, если он еще виден
-        const splashTitle = document.querySelector('.splash-title');
-        if (splashTitle) {
-            splashTitle.textContent = translations[language].splashTitle;
+        // Устанавливаем язык и сохраняем его в хранилище
+        currentLanguage = language;
+        localStorage.setItem('language', language);
+        
+        // Обновляем текст кнопки переключателя языка
+        const languageButton = document.getElementById('language-switch');
+        languageButton.textContent = language === 'ru' ? 'EN' : 'RU';
+        
+        // Получаем все элементы, которые требуют перевода
+        // === НАВИГАЦИЯ ===
+        const navigationItems = document.querySelectorAll('nav ul li a');
+        
+        if (navigationItems.length > 0) {
+            // Раздел с 3D моделью
+            navigationItems[0].textContent = translations[language].modelLink;
+            
+            // Раздел с историей
+            navigationItems[1].textContent = translations[language].historyLink;
+            
+            // Раздел с калькулятором
+            navigationItems[2].textContent = translations[language].calculatorLink;
+            
+            // Раздел с задачами
+            navigationItems[3].textContent = translations[language].problemsLink;
         }
         
-        // Основная навигация
-        const navItems = {
-            modelLink: document.querySelector('nav ul li:nth-child(1) a'),
-            historyLink: document.querySelector('nav ul li:nth-child(2) a'),
-            calculatorLink: document.querySelector('nav ul li:nth-child(3) a'),
-            problemsLink: document.querySelector('nav ul li:nth-child(4) a'),
-            logoText: document.querySelector('.logo span')
-        };
+        // === ГЛАВНАЯ СТРАНИЦА ===
+        // Проверяем, находимся ли мы на главной странице (наличие hero раздела)
+        const heroSection = document.getElementById('hero');
         
-        // Секция героя
-        const heroItems = {
-            heroTitle: document.querySelector('.hero-content h2'),
-            heroSubtitle: document.querySelector('.hero-content p')
-        };
-        
-        // Секция 3D модели
-        const modelItems = {
-            modelTitle: document.querySelector('#model h2'),
-            rotateButton: document.querySelector('#rotate-toggle'),
-            wireframeButton: document.querySelector('#wireframe-toggle'),
-            colorLabel: document.querySelector('.color-controls label')
-        };
-        
-        // Секция истории
-        const historyItems = {
-            historyTitle: document.querySelector('#history h2'),
-            historySubtitle1: document.querySelector('.history-text h3:nth-child(1)'),
-            historyText1: document.querySelector('.history-text p:nth-child(2)'),
-            historySubtitle2: document.querySelector('.history-text h3:nth-child(3)'),
-            historyText2: document.querySelector('.history-text p:nth-child(4)'),
-            historySubtitle3: document.querySelector('.history-text h3:nth-child(5)'),
-            historyText3: document.querySelector('.history-text p:nth-child(6)'),
-            imageCaption: document.querySelector('.caption')
-        };
-        
-        // Секция калькулятора
-        const calculatorItems = {
-            calculatorTitle: document.querySelector('#calculator h2'),
-            parametersTitle: document.querySelector('.parameter-selection p'),
-            edgeLabel: document.querySelector('#edge-checkbox').parentNode.textContent.trim(),
-            volumeLabel: document.querySelector('#volume-checkbox').parentNode.textContent.trim(),
-            surfaceLabel: document.querySelector('#surface-checkbox').parentNode.textContent.trim(),
-            circumscribedLabel: document.querySelector('#circumscribed-checkbox').parentNode.textContent.trim(),
-            inscribedLabel: document.querySelector('#inscribed-checkbox').parentNode.textContent.trim(),
-            calculateButton: document.querySelector('#calculate-btn'),
-            resultsTitle: document.querySelector('.results-container h3'),
-            edgeResult: document.querySelector('#edge-result-card h4'),
-            volumeResult: document.querySelector('#volume-result-card h4'),
-            surfaceResult: document.querySelector('#surface-area-result-card h4'),
-            circumscribedResult: document.querySelector('#circumscribed-radius-result-card h4'),
-            inscribedResult: document.querySelector('#inscribed-radius-result-card h4')
-        };
-        
-        // Футер
-        const footerItems = {
-            aboutProject: document.querySelector('.footer-section:nth-child(1) h3'),
-            aboutText: document.querySelector('.footer-section:nth-child(1) p'),
-            navigationTitle: document.querySelector('.footer-section:nth-child(2) h3'),
-            resourcesTitle: document.querySelector('.footer-section:nth-child(3) h3'),
-            wikipediaLink: document.querySelector('.footer-section:nth-child(3) ul li:nth-child(1) a'),
-            mathworldLink: document.querySelector('.footer-section:nth-child(3) ul li:nth-child(2) a')
-        };
-        
-        // Объединяем все элементы для упрощения перебора
-        const allElements = {...navItems, ...heroItems, ...modelItems, ...historyItems, ...calculatorItems, ...footerItems};
-        
-        // Перебираем все элементы и меняем их содержимое
-        for (const [key, element] of Object.entries(allElements)) {
-            if (element && translations[language][key]) {
-                // Особая обработка для элементов с иконками
-                if (key === 'rotateButton' || key === 'wireframeButton') {
-                    const icon = element.querySelector('i');
-                    if (icon) {
-                        const iconHTML = icon.outerHTML;
-                        element.innerHTML = iconHTML + ' ' + translations[language][key];
-                    } else {
-                        element.textContent = translations[language][key];
-                    }
+        if (heroSection) {
+            // Герой раздел
+            const heroTitle = heroSection.querySelector('h2');
+            const heroSubtitle = heroSection.querySelector('p');
+            
+            if (heroTitle) heroTitle.textContent = translations[language].heroTitle;
+            if (heroSubtitle) heroSubtitle.textContent = translations[language].heroSubtitle;
+            
+            // 3D Модель
+            const modelSection = document.getElementById('model');
+            if (modelSection) {
+                const modelTitle = modelSection.querySelector('h2');
+                const rotateButton = document.getElementById('rotate-toggle');
+                const wireframeButton = document.getElementById('wireframe-toggle');
+                const colorLabel = document.querySelector('.color-controls label');
+                
+                if (modelTitle) modelTitle.textContent = translations[language].modelTitle;
+                if (rotateButton) {
+                    const icon = rotateButton.querySelector('i');
+                    rotateButton.innerHTML = '';
+                    rotateButton.appendChild(icon);
+                    rotateButton.appendChild(document.createTextNode(' ' + translations[language].rotateButton));
                 }
-                // Особая обработка для элементов с чекбоксами
-                else if (key.endsWith('Label') && key !== 'colorLabel') {
-                    // Находим родительский элемент label
-                    const labelElement = document.querySelector(`#${key.replace('Label', '')}-checkbox`).parentNode;
-                    // Сохраняем чекбокс
-                    const checkbox = labelElement.querySelector('input[type="checkbox"]');
-                    // Обновляем текст, сохраняя чекбокс в начале
-                    labelElement.innerHTML = '';
-                    labelElement.appendChild(checkbox);
-                    labelElement.appendChild(document.createTextNode(' ' + translations[language][key]));
+                if (wireframeButton) {
+                    const icon = wireframeButton.querySelector('i');
+                    wireframeButton.innerHTML = '';
+                    wireframeButton.appendChild(icon);
+                    wireframeButton.appendChild(document.createTextNode(' ' + translations[language].wireframeButton));
                 }
-                else {
-                    element.textContent = translations[language][key];
+                if (colorLabel) colorLabel.textContent = translations[language].colorLabel;
+            }
+            
+            // История
+            const historySection = document.getElementById('history');
+            if (historySection) {
+                const historyTitle = historySection.querySelector('h2');
+                const subheadings = historySection.querySelectorAll('.history-text h3');
+                const paragraphs = historySection.querySelectorAll('.history-text p');
+                const imageCaption = historySection.querySelector('.caption');
+                
+                if (historyTitle) historyTitle.textContent = translations[language].historyTitle;
+                
+                if (subheadings.length >= 3) {
+                    subheadings[0].textContent = translations[language].historySubtitle1;
+                    subheadings[1].textContent = translations[language].historySubtitle2;
+                    subheadings[2].textContent = translations[language].historySubtitle3;
+                }
+                
+                if (paragraphs.length >= 3) {
+                    paragraphs[0].textContent = translations[language].historyText1;
+                    paragraphs[1].textContent = translations[language].historyText2;
+                    paragraphs[2].textContent = translations[language].historyText3;
+                }
+                
+                if (imageCaption) {
+                    imageCaption.textContent = language === 'ru' ? 
+                        translations[language].imageCaption :
+                        translations[language].imageCaption;
                 }
             }
-        }
-        
-        // Обновляем сообщения об ошибках для функции калькулятора
-        // Это не отображаемые элементы, но мы обновляем строки, которые могут появиться
-        window.calculatorMessages = {
-            errorTooMany: translations[language].errorTooMany,
-            errorNoParameters: translations[language].errorNoParameters,
-            errorInvalidValues: translations[language].errorInvalidValues,
-            errorInconsistent: translations[language].errorInconsistent,
-            successMessage: translations[language].successMessage
-        };
-        
-        // Страница задач - если мы на ней
-        const problemsPage = document.querySelector('.problems-list');
-        if (problemsPage) {
-            // Заголовок страницы задач
-            document.querySelector('.problems-header h2').textContent = translations[language].problemsTitle;
-            document.querySelector('.problems-header p').textContent = translations[language].problemsSubtitle;
             
-            // Кнопки фильтра
-            document.querySelector('.difficulty-btn[data-difficulty="all"]').textContent = translations[language].difficultyAll;
-            document.querySelector('.difficulty-btn[data-difficulty="easy"]').textContent = translations[language].difficultyEasy;
-            document.querySelector('.difficulty-btn[data-difficulty="medium"]').textContent = translations[language].difficultyMedium;
-            document.querySelector('.difficulty-btn[data-difficulty="hard"]').textContent = translations[language].difficultyHard;
+            // Калькулятор
+            const calculatorSection = document.getElementById('calculator');
+            if (calculatorSection) {
+                const calculatorTitle = calculatorSection.querySelector('h2');
+                const parametersText = calculatorSection.querySelector('.parameter-selection p');
+                const labels = calculatorSection.querySelectorAll('.parameter-label');
+                const calculateButton = document.getElementById('calculate-btn');
+                const resultsTitle = calculatorSection.querySelector('.results-container h3');
+                const resultTitles = calculatorSection.querySelectorAll('.result-card h4');
+                
+                if (calculatorTitle) calculatorTitle.textContent = translations[language].calculatorTitle;
+                if (parametersText) parametersText.textContent = translations[language].parametersTitle;
+                
+                if (labels.length >= 5) {
+                    // Получаем тексты без чекбоксов
+                    const edgeLabel = labels[0].childNodes[1].textContent.trim();
+                    labels[0].childNodes[1].textContent = ' ' + translations[language].edgeLabel;
+                    
+                    const volumeLabel = labels[1].childNodes[1].textContent.trim();
+                    labels[1].childNodes[1].textContent = ' ' + translations[language].volumeLabel;
+                    
+                    const surfaceLabel = labels[2].childNodes[1].textContent.trim();
+                    labels[2].childNodes[1].textContent = ' ' + translations[language].surfaceLabel;
+                    
+                    const circumscribedLabel = labels[3].childNodes[1].textContent.trim();
+                    labels[3].childNodes[1].textContent = ' ' + translations[language].circumscribedLabel;
+                    
+                    const inscribedLabel = labels[4].childNodes[1].textContent.trim();
+                    labels[4].childNodes[1].textContent = ' ' + translations[language].inscribedLabel;
+                }
+                
+                if (calculateButton) calculateButton.textContent = translations[language].calculateButton;
+                if (resultsTitle) resultsTitle.textContent = translations[language].resultsTitle;
+                
+                if (resultTitles.length >= 5) {
+                    resultTitles[0].textContent = translations[language].edgeResult;
+                    resultTitles[1].textContent = translations[language].volumeResult;
+                    resultTitles[2].textContent = translations[language].surfaceResult;
+                    resultTitles[3].textContent = translations[language].circumscribedResult;
+                    resultTitles[4].textContent = translations[language].inscribedResult;
+                }
+                
+                // Обновляем сообщения калькулятора
+                window.calculatorMessages = {
+                    tooManyParams: translations[language].errorTooMany,
+                    noParams: translations[language].errorNoParameters,
+                    invalidParams: translations[language].errorInvalidValues,
+                    incompatibleParams: translations[language].errorInconsistent,
+                    success: translations[language].successMessage
+                };
+            }
             
-            // Карточки задач
-            document.querySelectorAll('.problem-card').forEach((card, index) => {
-                // Номер задачи
-                card.querySelector('.problem-number').textContent = `${translations[language].problemPrefix} ${index + 1}`;
+            // Раздел с формулами
+            const formulasSection = document.getElementById('formulas');
+            if (formulasSection) {
+                const formulasTitle = formulasSection.querySelector('h2');
+                const categoryTitles = formulasSection.querySelectorAll('.formula-category h3');
+                const formulaCards = formulasSection.querySelectorAll('.formula-card');
                 
-                // Кнопка подсказки
-                const hintBtn = card.querySelector('.hint-btn');
-                const hintText = card.querySelector('.problem-hint');
-                if (hintBtn) {
-                    if (hintText.classList.contains('hidden')) {
-                        hintBtn.innerHTML = `<i class="fas fa-lightbulb"></i> ${translations[language].hintShow}`;
-                    } else {
-                        hintBtn.innerHTML = `<i class="fas fa-times"></i> ${translations[language].hintHide}`;
-                    }
+                if (formulasTitle) formulasTitle.textContent = translations[language].calculatorTitle;
+                
+                if (categoryTitles.length >= 3) {
+                    categoryTitles[0].textContent = translations[language].parametersTitle;
+                    categoryTitles[1].textContent = translations[language].resultsTitle;
+                    categoryTitles[2].textContent = translations[language].resultsTitle;
                 }
                 
-                // Кнопка проверки
-                const checkBtn = card.querySelector('.check-btn');
-                if (checkBtn) {
-                    checkBtn.textContent = translations[language].checkAnswer;
+                if (formulaCards.length >= 12) {
+                    // Основные характеристики
+                    formulaCards[0].querySelector('h4').textContent = translations[language].edgeLabel;
+                    formulaCards[0].querySelector('.formula-description').textContent = translations[language].edgeDescription;
+                    
+                    formulaCards[1].querySelector('h4').textContent = translations[language].volumeLabel;
+                    formulaCards[1].querySelector('.formula-description').textContent = translations[language].volumeDescription;
+                    
+                    formulaCards[2].querySelector('h4').textContent = translations[language].inscribedLabel;
+                    formulaCards[2].querySelector('.formula-description').textContent = translations[language].inscribedDescription;
+                    
+                    formulaCards[3].querySelector('h4').textContent = translations[language].circumscribedLabel;
+                    formulaCards[3].querySelector('.formula-description').textContent = translations[language].circumscribedDescription;
+                    
+                    // Дополнительные характеристики
+                    formulaCards[4].querySelector('h4').textContent = translations[language].surfaceLabel;
+                    formulaCards[4].querySelector('.formula-description').textContent = translations[language].surfaceDescription;
+                    
+                    formulaCards[5].querySelector('h4').textContent = translations[language].calculateButton;
+                    formulaCards[5].querySelector('.formula-description').textContent = translations[language].calculateDescription;
+                    
+                    formulaCards[6].querySelector('h4').textContent = translations[language].resultsTitle;
+                    formulaCards[6].querySelector('.formula-description').textContent = translations[language].resultsDescription;
+                    
+                    formulaCards[7].querySelector('h4').textContent = translations[language].edgeResult;
+                    formulaCards[7].querySelector('.formula-description').textContent = translations[language].edgeResultDescription;
+                    
+                    formulaCards[8].querySelector('h4').textContent = translations[language].volumeResult;
+                    formulaCards[8].querySelector('.formula-description').textContent = translations[language].volumeResultDescription;
+                    
+                    formulaCards[9].querySelector('h4').textContent = translations[language].surfaceResult;
+                    formulaCards[9].querySelector('.formula-description').textContent = translations[language].surfaceResultDescription;
+                    
+                    formulaCards[10].querySelector('h4').textContent = translations[language].circumscribedResult;
+                    formulaCards[10].querySelector('.formula-description').textContent = translations[language].circumscribedResultDescription;
+                    
+                    formulaCards[11].querySelector('h4').textContent = translations[language].inscribedResult;
+                    formulaCards[11].querySelector('.formula-description').textContent = translations[language].inscribedResultDescription;
                 }
                 
-                // Placeholder для ввода ответа
-                const answerInput = card.querySelector('.solution-input input');
-                if (answerInput) {
-                    answerInput.placeholder = translations[language].answerPlaceholder;
-                }
-            });
-            
-            // Обновляем сообщения для проверки ответов
-            window.problemMessages = {
-                correctAnswer: translations[language].correctAnswer,
-                incorrectAnswer: translations[language].incorrectAnswer,
-                enterNumber: translations[language].enterNumber
-            };
-            
-            // Переводим модальное окно достижения, если оно существует
-            const achievementModal = document.getElementById('achievement-modal');
-            if (achievementModal) {
-                const achievementTitle = achievementModal.querySelector('.achievement-title');
-                const achievementDescription = achievementModal.querySelector('.achievement-description');
-                const achievementButton = achievementModal.querySelector('.achievement-close');
-                
-                if (achievementTitle) {
-                    achievementTitle.textContent = translations[language].achievementTitle;
-                }
-                
-                if (achievementDescription) {
-                    achievementDescription.textContent = translations[language].achievementDescription;
-                }
-                
-                if (achievementButton) {
-                    achievementButton.textContent = translations[language].achievementButton;
+                // После перевода формул запускаем рендеринг MathJax
+                if (typeof MathJax !== 'undefined') {
+                    MathJax.typeset();
                 }
             }
-        }
-
-        // Для футера, важно обновить все ссылки в навигационном разделе
-        const footerNavigationLinks = document.querySelectorAll('.footer-section:nth-child(2) ul li a');
-        if (footerNavigationLinks.length > 0) {
-            footerNavigationLinks.forEach((link, index) => {
-                switch(index) {
-                    case 0:
-                        link.textContent = translations[language].modelLink;
-                        break;
-                    case 1:
-                        link.textContent = translations[language].historyLink;
-                        break;
-                    case 2:
-                        link.textContent = translations[language].calculatorLink;
-                        break;
-                    case 3:
-                        link.textContent = translations[language].problemsLink;
-                        break;
-                }
-            });
         }
     }
     
@@ -736,71 +738,10 @@ function initScrollHeader() {
     });
 }
 
-// Добавляем и обрабатываем события страницы
+// Инициализация после загрузки DOM
 document.addEventListener('DOMContentLoaded', function() {
-    setupSplashScreen();
-    
-    // Инициализация скрытия хедера при скролле
-    initScrollHeader();
-    
-    // Инициализация переключателя темы
-    initThemeToggle();
-    
-    // Инициализация 3D модели, если есть контейнер для неё
-    if (document.getElementById('dodecahedron-model')) {
-        initDodecahedronModel();
-        
-        // Добавляем обработчики для кнопок управления моделью
-        document.getElementById('rotate-toggle').addEventListener('click', toggleRotation);
-        document.getElementById('wireframe-toggle').addEventListener('click', toggleWireframe);
-        document.getElementById('model-color').addEventListener('input', changeModelColor);
-    }
-    
-    // Инициализация калькулятора, если мы на странице с калькулятором
-    if (document.getElementById('calculate-btn')) {
-        document.getElementById('calculate-btn').addEventListener('click', calculateProperties);
-        
-        // Добавляем обработчики для чекбоксов параметров
-        document.querySelectorAll('.parameter-checkbox').forEach(checkbox => {
-            checkbox.addEventListener('change', handleParameterCheckboxChange);
-            
-            // Инициализируем начальное состояние
-            const event = new Event('change');
-            checkbox.dispatchEvent(event);
-        });
-        
-        // Устанавливаем начальные значения полей ввода на основе длины ребра = 1
-        const edgeLength = 1;
-        document.getElementById('volume-value').value = calculateVolume(edgeLength).toFixed(2);
-        document.getElementById('surface-value').value = calculateSurfaceArea(edgeLength).toFixed(2);
-        document.getElementById('circumscribed-value').value = calculateCircumscribedRadius(edgeLength).toFixed(2);
-        document.getElementById('inscribed-value').value = calculateInscribedRadius(edgeLength).toFixed(2);
-    }
-    
-    // Инициализация страницы с задачами, если мы на ней
-    if (document.querySelector('.problems-list')) {
-        initProblemPage();
-    }
-
-    // Плавная прокрутка для якорных ссылок
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            
-            const targetId = this.getAttribute('href');
-            if (targetId === '#') return;
-            
-            const targetElement = document.querySelector(targetId);
-            if (targetElement) {
-                targetElement.scrollIntoView({
-                    behavior: 'smooth'
-                });
-            }
-        });
-    });
-
-    // Инициализация переключателя языка
-    initLanguageToggle();
+    // Инициализируем все компоненты
+    initComponents();
 });
 
 // === ФУНКЦИИ ТЕМЫ ===
@@ -1201,4 +1142,263 @@ function calculateCircumscribedRadius(a) {
  */
 function calculateInscribedRadius(a) {
     return DodecahedronConstants.INSCRIBED_RADIUS_COEFFICIENT * a;
+}
+
+// Функция для инициализации всех компонентов на странице
+function initComponents() {
+    initSplashScreen();
+    
+    // Инициализируем хедер, скрывающийся при скролле
+    initScrollHeader();
+    
+    // Инициализируем плавную прокрутку для якорных ссылок
+    initSmoothScroll();
+    
+    // Инициализируем MathJax для формул (если доступен)
+    if (typeof MathJax !== 'undefined') {
+        MathJax.typeset();
+    }
+    
+    // Инициализируем переключение темы
+    initThemeToggle();
+    
+    // Инициализируем переключение языка
+    initLanguageToggle();
+    
+    // Если мы находимся на главной странице (проверяем наличие 3D модели)
+    if (document.getElementById('dodecahedron-model')) {
+        initThreeJS();
+        initModelControls();
+        initCalculator();
+    }
+    
+    // Если мы находимся на странице задач (проверяем наличие списка задач)
+    if (document.querySelector('.problems-list')) {
+        initProblemPage();
+    }
+}
+
+/**
+ * Инициализирует сплеш-экран
+ */
+function initSplashScreen() {
+    const splashScreen = document.querySelector('.splash-screen');
+    if (!splashScreen) return;
+    
+    // Показываем сплеш-экран на короткое время
+    splashScreen.style.display = 'flex';
+    
+    // Через 1.5 сек скрываем сплеш-экран
+    setTimeout(() => {
+        splashScreen.classList.add('fade-out');
+        
+        // Полностью удаляем сплеш-экран через 500мс после начала анимации
+        setTimeout(() => {
+            splashScreen.style.display = 'none';
+        }, 500);
+    }, 1500);
+}
+
+/**
+ * Инициализирует скрытие хедера при скролле
+ */
+function initScrollHeader() {
+    let lastScrollTop = 0;
+    const header = document.querySelector('header');
+    if (!header) return;
+    
+    window.addEventListener('scroll', () => {
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        
+        // Если скролл больше 100px, добавляем класс для тени
+        if (scrollTop > 100) {
+            header.classList.add('scrolled');
+        } else {
+            header.classList.remove('scrolled');
+        }
+        
+        // Скрываем хедер при скролле вниз и показываем при скролле вверх
+        if (scrollTop > lastScrollTop && scrollTop > 200) {
+            header.classList.add('header-hidden');
+        } else {
+            header.classList.remove('header-hidden');
+        }
+        
+        lastScrollTop = scrollTop;
+    });
+}
+
+/**
+ * Инициализирует плавную прокрутку для якорных ссылок
+ */
+function initSmoothScroll() {
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            
+            const targetId = this.getAttribute('href');
+            if (targetId === '#') return;
+            
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                targetElement.scrollIntoView({
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+}
+
+/**
+ * Инициализирует 3D модель додекаэдра с помощью Three.js
+ */
+function initThreeJS() {
+    // Настройка сцены, камеры и рендерера
+    scene = new THREE.Scene();
+    camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
+    
+    // Создаём рендерер с прозрачным фоном
+    renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    
+    // Настраиваем размер рендерера и добавляем его в DOM
+    const container = document.getElementById('dodecahedron-model');
+    if (!container) return;
+    
+    const containerWidth = container.clientWidth;
+    const containerHeight = container.clientHeight || containerWidth;
+    
+    renderer.setSize(containerWidth, containerHeight);
+    container.appendChild(renderer.domElement);
+    
+    // Добавляем OrbitControls для интерактивности
+    controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.05;
+    
+    // Создаем додекаэдр
+    const geometry = new THREE.DodecahedronGeometry(1, 0);
+    const material = new THREE.MeshStandardMaterial({
+        color: 0x3498db,
+        roughness: 0.6,
+        metalness: 0.3,
+        flatShading: true
+    });
+    
+    // Создаем каркас для додекаэдра
+    const wireframeGeometry = new THREE.WireframeGeometry(geometry);
+    const wireframeMaterial = new THREE.LineBasicMaterial({
+        color: 0xffffff,
+        linewidth: 1
+    });
+    const wireframe = new THREE.LineSegments(wireframeGeometry, wireframeMaterial);
+    
+    // Создаем основной меш и добавляем каркас как дочерний объект
+    dodecahedron = new THREE.Mesh(geometry, material);
+    dodecahedron.add(wireframe);
+    
+    // По умолчанию каркас скрыт
+    wireframe.visible = isWireframe;
+    
+    // Добавляем додекаэдр на сцену
+    scene.add(dodecahedron);
+    
+    // Добавляем освещение
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+    scene.add(ambientLight);
+    
+    const directionalLight1 = new THREE.DirectionalLight(0xffffff, 0.6);
+    directionalLight1.position.set(1, 1, 1);
+    scene.add(directionalLight1);
+    
+    const directionalLight2 = new THREE.DirectionalLight(0xffffff, 0.6);
+    directionalLight2.position.set(-1, -1, -1);
+    scene.add(directionalLight2);
+    
+    // Устанавливаем позицию камеры и целевую точку просмотра
+    camera.position.z = 3;
+    
+    // Настройка адаптивного размера модели
+    function onWindowResize() {
+        const containerWidth = container.clientWidth;
+        const containerHeight = container.clientHeight || containerWidth;
+        
+        camera.aspect = containerWidth / containerHeight;
+        camera.updateProjectionMatrix();
+        
+        renderer.setSize(containerWidth, containerHeight);
+    }
+    
+    window.addEventListener('resize', onWindowResize);
+    
+    // Функция анимации
+    function animate() {
+        requestAnimationFrame(animate);
+        
+        // Вращаем додекаэдр, если активировано вращение
+        if (isRotating) {
+            dodecahedron.rotation.x += 0.005;
+            dodecahedron.rotation.y += 0.007;
+        }
+        
+        // Обновляем OrbitControls
+        controls.update();
+        
+        // Рендерим сцену
+        renderer.render(scene, camera);
+    }
+    
+    // Запускаем анимацию
+    animate();
+}
+
+/**
+ * Инициализирует элементы управления 3D моделью
+ */
+function initModelControls() {
+    // Добавляем обработчики для кнопок управления моделью
+    const rotateButton = document.getElementById('rotate-toggle');
+    const wireframeButton = document.getElementById('wireframe-toggle');
+    const colorInput = document.getElementById('model-color');
+    
+    if (rotateButton) {
+        rotateButton.addEventListener('click', toggleRotation);
+        // Устанавливаем начальное состояние кнопки вращения
+        if (isRotating) {
+            rotateButton.classList.add('active');
+        }
+    }
+    
+    if (wireframeButton) {
+        wireframeButton.addEventListener('click', toggleWireframe);
+    }
+    
+    if (colorInput) {
+        colorInput.addEventListener('input', changeModelColor);
+    }
+}
+
+/**
+ * Инициализирует калькулятор свойств додекаэдра
+ */
+function initCalculator() {
+    const calculateButton = document.getElementById('calculate-btn');
+    if (calculateButton) {
+        calculateButton.addEventListener('click', calculateProperties);
+    }
+    
+    // Добавляем обработчики для чекбоксов параметров
+    document.querySelectorAll('.parameter-checkbox').forEach(checkbox => {
+        checkbox.addEventListener('change', handleParameterCheckboxChange);
+        
+        // Инициализируем начальное состояние
+        const event = new Event('change');
+        checkbox.dispatchEvent(event);
+    });
+    
+    // Устанавливаем начальные значения полей ввода на основе длины ребра = 1
+    const edgeLength = 1;
+    document.getElementById('volume-value').value = calculateVolume(edgeLength).toFixed(2);
+    document.getElementById('surface-value').value = calculateSurfaceArea(edgeLength).toFixed(2);
+    document.getElementById('circumscribed-value').value = calculateCircumscribedRadius(edgeLength).toFixed(2);
+    document.getElementById('inscribed-value').value = calculateInscribedRadius(edgeLength).toFixed(2);
 } 
