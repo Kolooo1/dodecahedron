@@ -406,6 +406,25 @@ function initLanguageToggle() {
             realComplimentContent: 'Что сказал один додекаэдр другому? "Ты выглядишь сегодня многогранно!"',
             atMathConference: 'На математической конференции',
             atMathConferenceContent: 'Додекаэдр выступает на математической конференции: "Я не хочу казаться самонадеянным, но у других фигур просто не хватает граней, чтобы понять мою теорию".',
+            
+            // Тексты задач
+            problem1Text: 'Найдите объем додекаэдра, если длина его ребра равна 5 см.',
+            problem1Hint: 'Подсказка: Используйте формулу \\(V = \\frac{15 + 7\\sqrt{5}}{4} \\times a^3\\), где \\(a\\) - длина ребра.',
+            
+            problem2Text: 'Найдите площадь поверхности додекаэдра с ребром длиной 3 см.',
+            problem2Hint: 'Подсказка: Используйте формулу \\(S = 3\\sqrt{25 + 10\\sqrt{5}} \\times a^2\\), где \\(a\\) - длина ребра.',
+            
+            problem3Text: 'Найдите радиус вписанной сферы додекаэдра с ребром 4 см.',
+            problem3Hint: 'Подсказка: Радиус вписанной сферы \\(r = a \\times \\frac{\\sqrt{75 + 30\\sqrt{5}}}{20}\\), где \\(a\\) - длина ребра.',
+            
+            problem4Text: 'Для додекаэдра с радиусом описанной сферы 10 см найдите длину его ребра.',
+            problem4Hint: 'Подсказка: Радиус описанной сферы \\(R = a\\sqrt{3} \\times \\frac{1 + \\sqrt{5}}{4}\\), где \\(a\\) - длина ребра. Выразите \\(a\\) из этой формулы.',
+            
+            problem5Text: 'Вычислите двугранный угол додекаэдра (угол между соседними гранями).',
+            problem5Hint: 'Подсказка: Двугранный угол додекаэдра не зависит от размера и равен \\(\\cot^{-1}(-\\frac{1}{\\sqrt{5}})\\).',
+            
+            problem6Text: 'Додекаэдр вписан в куб так, что каждая вершина додекаэдра лежит на одной из граней куба. Если объем куба равен 1000 см³, найдите объем додекаэдра.',
+            problem6Hint: 'Подсказка: Это сложная геометрическая задача. Вам нужно найти отношение объемов додекаэдра и куба в такой конфигурации.'
         },
         en: {
             // Navigation and header
@@ -534,6 +553,25 @@ function initLanguageToggle() {
             realComplimentContent: 'What did one dodecahedron say to another? "You look quite multifaceted today!"',
             atMathConference: 'At a Math Conference',
             atMathConferenceContent: 'A dodecahedron speaks at a math conference: "I don\'t want to sound presumptuous, but other shapes simply don\'t have enough faces to understand my theory."',
+            
+            // Problem texts
+            problem1Text: 'Find the volume of a dodecahedron if its edge length is 5 cm.',
+            problem1Hint: 'Hint: Use the formula \\(V = \\frac{15 + 7\\sqrt{5}}{4} \\times a^3\\), where \\(a\\) is the edge length.',
+            
+            problem2Text: 'Find the surface area of a dodecahedron with an edge length of 3 cm.',
+            problem2Hint: 'Hint: Use the formula \\(S = 3\\sqrt{25 + 10\\sqrt{5}} \\times a^2\\), where \\(a\\) is the edge length.',
+            
+            problem3Text: 'Find the radius of the inscribed sphere of a dodecahedron with an edge length of 4 cm.',
+            problem3Hint: 'Hint: The radius of the inscribed sphere is \\(r = a \\times \\frac{\\sqrt{75 + 30\\sqrt{5}}}{20}\\), where \\(a\\) is the edge length.',
+            
+            problem4Text: 'For a dodecahedron with a circumscribed sphere radius of 10 cm, find the length of its edge.',
+            problem4Hint: 'Hint: The radius of the circumscribed sphere is \\(R = a\\sqrt{3} \\times \\frac{1 + \\sqrt{5}}{4}\\), where \\(a\\) is the edge length. Express \\(a\\) from this formula.',
+            
+            problem5Text: 'Calculate the dihedral angle of a dodecahedron (the angle between adjacent faces).',
+            problem5Hint: 'Hint: The dihedral angle of a dodecahedron is independent of its size and equals \\(\\cot^{-1}(-\\frac{1}{\\sqrt{5}})\\).',
+            
+            problem6Text: 'A dodecahedron is inscribed in a cube such that each vertex of the dodecahedron lies on one of the faces of the cube. If the volume of the cube is 1000 cm³, find the volume of the dodecahedron.',
+            problem6Hint: 'Hint: This is a complex geometric problem. You need to find the ratio of the volumes of the dodecahedron and the cube in this configuration.'
         }
     };
     
@@ -859,722 +897,27 @@ function initLanguageToggle() {
                     difficultyLabel.textContent = difficulty;
                 }
                 
-                if (hintButton) {
-                    const isHintShown = !hintButton.closest('.hint-container').querySelector('.problem-hint').classList.contains('hidden');
-                    if (isHintShown) {
-                        hintButton.innerHTML = `<i class="fas fa-times"></i> ${translations[language].hintHide}`;
-                    } else {
-                        hintButton.innerHTML = `<i class="fas fa-lightbulb"></i> ${translations[language].hintShow}`;
+                // Получаем текст задачи и подсказки
+                const problemText = card.querySelector('.problem-content > p');
+                const hintText = card.querySelector('.problem-hint p');
+                
+                // Переводим текст задачи и подсказки
+                if (problemText) {
+                    const problemKey = `problem${index + 1}Text`;
+                    if (translations[language][problemKey]) {
+                        problemText.textContent = translations[language][problemKey];
                     }
                 }
                 
-                if (checkButton) {
-                    checkButton.textContent = translations[language].checkAnswer;
-                }
-                
-                if (input) {
-                    input.placeholder = translations[language].answerPlaceholder;
-                }
-            });
-            
-            // Обновляем отображение верных/неверных ответов
-            const feedbacks = document.querySelectorAll('.solution-feedback');
-            feedbacks.forEach(feedback => {
-                if (feedback.classList.contains('correct')) {
-                    feedback.textContent = translations[language].correctAnswer;
-                } else if (feedback.classList.contains('incorrect') && feedback.textContent) {
-                    if (feedback.textContent.includes('введите число') || feedback.textContent.includes('enter a number')) {
-                        feedback.textContent = translations[language].enterNumber;
-                    } else {
-                        feedback.textContent = translations[language].incorrectAnswer;
+                if (hintText) {
+                    const hintKey = `problem${index + 1}Hint`;
+                    if (translations[language][hintKey]) {
+                        hintText.innerHTML = translations[language][hintKey];
                     }
                 }
             });
-            
-            // Обновляем объект с сообщениями для страницы задач
-            window.problemMessages = {
-                enterNumber: translations[language].enterNumber,
-                correctAnswer: translations[language].correctAnswer,
-                incorrectAnswer: translations[language].incorrectAnswer
-            };
-            
-            // Переводим модальное окно достижения, если оно есть
-            const achievementModal = document.getElementById('achievement-modal');
-            if (achievementModal) {
-                const modalTitle = achievementModal.querySelector('h3');
-                const modalDescription = achievementModal.querySelector('p');
-                const modalButton = achievementModal.querySelector('button.achievement-accept');
-                
-                if (modalTitle) modalTitle.textContent = translations[language].achievementTitle;
-                if (modalDescription) modalDescription.textContent = translations[language].achievementDescription;
-                if (modalButton) modalButton.textContent = translations[language].achievementButton;
-            }
         }
     }
     
-    // Добавляем обработчик клика по кнопке переключения языка
-    if (languageToggle) {
-        languageToggle.addEventListener('click', function() {
-            currentLanguage = currentLanguage === 'ru' ? 'en' : 'ru';
-            languageToggle.textContent = currentLanguage === 'ru' ? 'EN' : 'RU';
-            translatePage(currentLanguage);
-            
-            // Сохраняем выбранный язык в localStorage
-            localStorage.setItem('language', currentLanguage);
-        });
-        
-        // Проверяем сохранённый язык и применяем его при загрузке
-        const savedLanguage = localStorage.getItem('language');
-        if (savedLanguage) {
-            currentLanguage = savedLanguage;
-            languageToggle.textContent = currentLanguage === 'ru' ? 'EN' : 'RU';
-            translatePage(currentLanguage);
-        }
-    }
-    
-    // Экспортируем функции для использования в других частях кода
-    window.translate = {
-        getCurrentLanguage: () => currentLanguage,
-        translatePage: translatePage
-    };
+    translatePage(language);
 }
-
-/**
- * Инициализация и настройка сплеш-экрана
- */
-function setupSplashScreen() {
-    // Скрываем скролл на время показа сплеш-экрана
-    document.body.style.overflow = 'hidden';
-    
-    // После скрытия сплеш-экрана восстанавливаем скролл
-    setTimeout(() => {
-        document.body.style.overflow = '';
-    }, 1500); // Задержка немного больше, чем анимация сплеш-экрана
-}
-
-/**
- * Функционал скрытия верхней навигации при прокрутке вниз
- */
-function initScrollHeader() {
-    let lastScroll = 0;
-    const header = document.querySelector('header');
-    const scrollThreshold = 50; // Уменьшаем порог прокрутки для более быстрого скрытия
-    
-    // Добавляем атрибут для начальной высоты хедера
-    const headerHeight = header.offsetHeight;
-    document.documentElement.style.setProperty('--header-height', `${headerHeight}px`);
-    
-    window.addEventListener('scroll', () => {
-        const currentScroll = window.pageYOffset;
-        
-        // Если прокручено меньше порогового значения, показываем хедер
-        if (currentScroll <= scrollThreshold) {
-            header.style.transform = 'translateY(0)';
-            header.classList.remove('scrolled-down');
-            header.classList.add('scrolled-up');
-            return;
-        }
-        
-        // Если скролл вниз и разница больше 5px - скрываем хедер
-        if (currentScroll > lastScroll + 5 && !header.classList.contains('scrolled-down')) {
-            header.style.transform = `translateY(-${headerHeight}px)`;
-            header.classList.add('scrolled-down');
-            header.classList.remove('scrolled-up');
-        } 
-        // Если скролл вверх и разница больше 5px - показываем хедер
-        else if (lastScroll > currentScroll + 5 && header.classList.contains('scrolled-down')) {
-            header.style.transform = 'translateY(0)';
-            header.classList.remove('scrolled-down');
-            header.classList.add('scrolled-up');
-        }
-        
-        lastScroll = currentScroll;
-    });
-}
-
-// Инициализация после загрузки DOM
-document.addEventListener('DOMContentLoaded', function() {
-    // Инициализируем все компоненты
-    initComponents();
-});
-
-// === ФУНКЦИИ ТЕМЫ ===
-
-/**
- * Инициализирует переключатель темы
- */
-function initThemeToggle() {
-    const themeSwitch = document.getElementById('theme-switch');
-    
-    // Проверяем сохраненную тему или предпочтения системы
-    const savedTheme = localStorage.getItem('theme');
-    const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
-    
-    // Устанавливаем начальное состояние
-    if (savedTheme === 'dark' || (!savedTheme && prefersDarkScheme.matches)) {
-        document.body.classList.add('dark-theme');
-        document.body.classList.remove('light-theme');
-        themeSwitch.checked = true;
-    }
-    
-    // Обработчик переключения темы
-    themeSwitch.addEventListener('change', () => {
-        if (themeSwitch.checked) {
-            document.body.classList.add('dark-theme');
-            document.body.classList.remove('light-theme');
-            localStorage.setItem('theme', 'dark');
-        } else {
-            document.body.classList.add('light-theme');
-            document.body.classList.remove('dark-theme');
-            localStorage.setItem('theme', 'light');
-        }
-    });
-}
-
-// === 3D МОДЕЛЬ ДОДЕКАЭДРА ===
-
-/**
- * Инициализирует 3D модель додекаэдра с помощью Three.js
- */
-function initThreeJS() {
-    // Настройка сцены, камеры и рендерера
-    scene = new THREE.Scene();
-    
-    // Настраиваем перспективную камеру с меньшим углом обзора для более естественного вида
-    // Уменьшаем угол обзора с 75 до 50 градусов, чтобы уменьшить перспективные искажения
-    const container = document.getElementById('dodecahedron-model');
-    if (!container) return;
-    
-    const containerWidth = container.clientWidth;
-    const containerHeight = container.clientHeight || containerWidth;
-    const aspectRatio = containerWidth / containerHeight;
-    
-    camera = new THREE.PerspectiveCamera(50, aspectRatio, 0.1, 1000);
-    
-    // Создаём рендерер с прозрачным фоном и лучшим качеством
-    renderer = new THREE.WebGLRenderer({ 
-        antialias: true, 
-        alpha: true,
-        precision: 'highp'
-    });
-    
-    renderer.setSize(containerWidth, containerHeight);
-    renderer.setPixelRatio(window.devicePixelRatio);
-    container.appendChild(renderer.domElement);
-    
-    // Добавляем OrbitControls для интерактивности
-    controls = new THREE.OrbitControls(camera, renderer.domElement);
-    controls.enableDamping = true;
-    controls.dampingFactor = 0.05;
-    controls.rotateSpeed = 0.8;
-    controls.enableZoom = true;
-    controls.minDistance = 2;
-    controls.maxDistance = 10;
-    
-    // Создаем додекаэдр с немного большим радиусом
-    const geometry = new THREE.DodecahedronGeometry(1.5, 0);
-    const material = new THREE.MeshStandardMaterial({
-        color: 0x3498db,
-        roughness: 0.5,
-        metalness: 0.2,
-        flatShading: true
-    });
-    
-    // Используем более точную геометрию для каркаса
-    const edgesGeometry = new THREE.EdgesGeometry(geometry);
-    const wireframeMaterial = new THREE.LineBasicMaterial({
-        color: 0xffffff,
-        linewidth: 1
-    });
-    const wireframe = new THREE.LineSegments(edgesGeometry, wireframeMaterial);
-    
-    // Создаем основной меш и добавляем каркас как дочерний объект
-    dodecahedron = new THREE.Mesh(geometry, material);
-    dodecahedron.add(wireframe);
-    
-    // По умолчанию каркас скрыт
-    wireframe.visible = isWireframe;
-    
-    // Устанавливаем начальное вращение для лучшего отображения додекаэдра
-    dodecahedron.rotation.x = Math.PI / 6;
-    dodecahedron.rotation.y = Math.PI / 4;
-    
-    // Добавляем додекаэдр на сцену
-    scene.add(dodecahedron);
-    
-    // Улучшаем освещение для лучшего объема фигуры
-    // Добавляем более мягкий ambient свет
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-    scene.add(ambientLight);
-    
-    // Добавляем направленный свет спереди сверху
-    const directionalLight1 = new THREE.DirectionalLight(0xffffff, 0.5);
-    directionalLight1.position.set(5, 5, 5);
-    scene.add(directionalLight1);
-    
-    // Добавляем направленный свет снизу слева для контраста
-    const directionalLight2 = new THREE.DirectionalLight(0xffffff, 0.3);
-    directionalLight2.position.set(-5, -2, -3);
-    scene.add(directionalLight2);
-    
-    // Устанавливаем позицию камеры дальше от объекта для более правильного перспективного вида
-    camera.position.set(0, 0, 5);
-    camera.lookAt(0, 0, 0);
-    
-    // Настройка адаптивного размера модели
-    function onWindowResize() {
-        const containerWidth = container.clientWidth;
-        const containerHeight = container.clientHeight || containerWidth;
-        
-        camera.aspect = containerWidth / containerHeight;
-        camera.updateProjectionMatrix();
-        
-        renderer.setSize(containerWidth, containerHeight);
-    }
-    
-    window.addEventListener('resize', onWindowResize);
-    
-    // Функция анимации
-    function animate() {
-        requestAnimationFrame(animate);
-        
-        // Вращаем додекаэдр, если активировано вращение
-        if (isRotating) {
-            // Уменьшаем скорость вращения для более плавного эффекта
-            dodecahedron.rotation.x += 0.003;
-            dodecahedron.rotation.y += 0.005;
-        }
-        
-        // Обновляем OrbitControls
-        controls.update();
-        
-        // Рендерим сцену
-        renderer.render(scene, camera);
-    }
-    
-    // Запускаем анимацию
-    animate();
-}
-
-/**
- * Анимация вращения 3D модели
- */
-function animate() {
-    requestAnimationFrame(animate);
-    
-    // Вращаем додекаэдр, если включено вращение
-    if (isRotating) {
-        dodecahedron.rotation.x += 0.005;
-        dodecahedron.rotation.y += 0.01;
-    }
-    
-    controls.update();
-    renderer.render(scene, camera);
-}
-
-/**
- * Включает/выключает автоматическое вращение додекаэдра
- */
-function toggleRotation() {
-    isRotating = !isRotating;
-    const button = document.getElementById('rotate-toggle');
-    
-    if (isRotating) {
-        button.innerHTML = '<i class="fas fa-sync-alt"></i> Вращение';
-        button.classList.remove('active');
-    } else {
-        button.innerHTML = '<i class="fas fa-pause"></i> Пауза';
-        button.classList.add('active');
-    }
-}
-
-/**
- * Включает/выключает отображение каркаса додекаэдра
- */
-function toggleWireframe() {
-    isWireframe = !isWireframe;
-    const button = document.getElementById('wireframe-toggle');
-    
-    // Переключаем видимость каркаса
-    dodecahedron.children[0].visible = isWireframe;
-    
-    if (isWireframe) {
-        button.classList.add('active');
-    } else {
-        button.classList.remove('active');
-    }
-}
-
-/**
- * Изменяет цвет модели додекаэдра
- */
-function changeModelColor(event) {
-    const color = event.target.value;
-    dodecahedron.material.color.set(color);
-}
-
-// === СТРАНИЦА ЗАДАЧ ===
-
-/**
- * Инициализирует функциональность страницы с задачами
- */
-function initProblemPage() {
-    // Загружаем информацию о решенных задачах из localStorage
-    loadSolvedProblems();
-    
-    // Добавляем обработчики для кнопок проверки ответов
-    document.querySelectorAll('.check-btn').forEach((button, index) => {
-        button.addEventListener('click', () => {
-            checkAnswer(index + 1, button.closest('.problem-solution'));
-        });
-        
-        // Отмечаем визуально уже решенные задачи
-        const problemCard = button.closest('.problem-card');
-        const problemNumber = index + 1;
-        if (solvedProblems[problemNumber]) {
-            const feedback = problemCard.querySelector('.solution-feedback');
-            let correctAnswerMessage = 'Правильно! Отличная работа.';
-            if (window.problemMessages) {
-                correctAnswerMessage = window.problemMessages.correctAnswer;
-            }
-            feedback.textContent = correctAnswerMessage;
-            feedback.className = 'solution-feedback correct';
-        }
-    });
-    
-    // Добавляем обработчики для кнопок фильтра по сложности
-    document.querySelectorAll('.difficulty-btn').forEach(button => {
-        button.addEventListener('click', () => {
-            filterProblemsByDifficulty(button.dataset.difficulty);
-            
-            // Обновляем активную кнопку
-            document.querySelectorAll('.difficulty-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            button.classList.add('active');
-        });
-    });
-    
-    // Добавляем обработчики для полей ввода (проверка при нажатии Enter)
-    document.querySelectorAll('.solution-input input').forEach((input, index) => {
-        input.addEventListener('keyup', (event) => {
-            if (event.key === 'Enter') {
-                checkAnswer(index + 1, input.closest('.problem-solution'));
-            }
-        });
-    });
-    
-    // Добавляем обработчики для кнопок подсказок
-    document.querySelectorAll('.hint-btn').forEach(button => {
-        button.addEventListener('click', () => {
-            // Находим контейнер подсказки и сам текст подсказки
-            const hintContainer = button.closest('.hint-container');
-            const hintText = hintContainer.querySelector('.problem-hint');
-            
-            // Переключаем видимость подсказки
-            hintText.classList.toggle('hidden');
-            
-            // Меняем текст кнопки и её стиль
-            if (hintText.classList.contains('hidden')) {
-                button.innerHTML = '<i class="fas fa-lightbulb"></i> Показать подсказку';
-                button.classList.remove('active');
-            } else {
-                button.innerHTML = '<i class="fas fa-times"></i> Скрыть подсказку';
-                button.classList.add('active');
-                
-                // Если используется MathJax, перерендерим формулы
-                if (typeof MathJax !== 'undefined') {
-                    MathJax.typeset([hintText]);
-                }
-            }
-        });
-    });
-    
-    // Добавляем обработчик для кнопки закрытия модального окна достижения
-    const achievementCloseBtn = document.getElementById('achievement-close');
-    if (achievementCloseBtn) {
-        achievementCloseBtn.addEventListener('click', () => {
-            document.getElementById('achievement-modal').classList.remove('show');
-        });
-    }
-    
-    // Проверяем, решены ли все задачи при загрузке страницы
-    checkMastery();
-}
-
-/**
- * Загружает информацию о решенных задачах из localStorage
- */
-function loadSolvedProblems() {
-    // Проверяем наличие сохраненных данных для каждой задачи
-    for (let i = 1; i <= Object.keys(solvedProblems).length; i++) {
-        const isSolved = localStorage.getItem(`problem_${i}_solved`) === 'true';
-        solvedProblems[i] = isSolved;
-    }
-}
-
-/**
- * Проверяет ответ пользователя на задачу
- * @param {number} problemNumber - номер задачи
- * @param {HTMLElement} solutionElement - элемент с решением
- */
-function checkAnswer(problemNumber, solutionElement) {
-    const input = solutionElement.querySelector('input');
-    const feedback = solutionElement.querySelector('.solution-feedback');
-    const userAnswer = parseFloat(input.value);
-    
-    let enterNumberMessage = 'Пожалуйста, введите число.';
-    let correctAnswerMessage = 'Правильно! Отличная работа.';
-    let incorrectAnswerMessage = 'Неправильно. Попробуйте еще раз.';
-    
-    // Используем переведённые сообщения, если они доступны
-    if (window.problemMessages) {
-        enterNumberMessage = window.problemMessages.enterNumber;
-        correctAnswerMessage = window.problemMessages.correctAnswer;
-        incorrectAnswerMessage = window.problemMessages.incorrectAnswer;
-    }
-    
-    if (isNaN(userAnswer)) {
-        feedback.textContent = enterNumberMessage;
-        feedback.className = 'solution-feedback incorrect';
-        return;
-    }
-    
-    const correctAnswer = problemAnswers[problemNumber];
-    const tolerance = 0.1; // Допустимая погрешность
-    
-    if (Math.abs(userAnswer - correctAnswer) <= tolerance) {
-        feedback.textContent = correctAnswerMessage;
-        feedback.className = 'solution-feedback correct';
-        
-        // Отмечаем задачу как решенную
-        solvedProblems[problemNumber] = true;
-        
-        // Сохраняем информацию о решенной задаче в localStorage
-        localStorage.setItem(`problem_${problemNumber}_solved`, 'true');
-        
-        // Проверяем, решены ли все задачи
-        checkMastery();
-    } else {
-        feedback.textContent = incorrectAnswerMessage;
-        feedback.className = 'solution-feedback incorrect';
-    }
-}
-
-/**
- * Проверяет, решены ли все задачи, и показывает модальное окно достижения, если да
- */
-function checkMastery() {
-    // Проверяем, все ли задачи решены
-    const allSolved = Object.values(solvedProblems).every(solved => solved === true);
-    
-    // Проверяем, показывалось ли уже достижение
-    const achievementShown = localStorage.getItem('dodecahedronMaster') === 'true';
-    
-    // Если все задачи решены и достижение еще не показывалось
-    if (allSolved && !achievementShown) {
-        // Показываем модальное окно достижения
-        showAchievementModal();
-        
-        // Сохраняем информацию о достижении в localStorage
-        localStorage.setItem('dodecahedronMaster', 'true');
-    }
-}
-
-/**
- * Показывает модальное окно достижения
- */
-function showAchievementModal() {
-    const modal = document.getElementById('achievement-modal');
-    if (modal) {
-        modal.classList.add('show');
-        
-        // Добавляем обработчик для кнопки закрытия
-        const closeButton = document.getElementById('achievement-close');
-        if (closeButton) {
-            closeButton.addEventListener('click', () => {
-                modal.classList.remove('show');
-            });
-        }
-    }
-}
-
-/**
- * Фильтрует задачи по уровню сложности
- * @param {string} difficulty - уровень сложности (easy, medium, hard, all)
- */
-function filterProblemsByDifficulty(difficulty) {
-    const problems = document.querySelectorAll('.problem-card');
-    
-    problems.forEach(problem => {
-        if (difficulty === 'all' || problem.dataset.difficulty === difficulty) {
-            problem.style.display = 'block';
-        } else {
-            problem.style.display = 'none';
-        }
-    });
-}
-
-/**
- * Вычисляет объем додекаэдра
- * @param {number} a - длина ребра
- * @return {number} объем
- */
-function calculateVolume(a) {
-    return DodecahedronConstants.VOLUME_COEFFICIENT * Math.pow(a, 3);
-}
-
-/**
- * Вычисляет площадь поверхности додекаэдра
- * @param {number} a - длина ребра
- * @return {number} площадь поверхности
- */
-function calculateSurfaceArea(a) {
-    return DodecahedronConstants.SURFACE_AREA_COEFFICIENT * Math.pow(a, 2);
-}
-
-/**
- * Вычисляет радиус описанной сферы додекаэдра
- * @param {number} a - длина ребра
- * @return {number} радиус описанной сферы
- */
-function calculateCircumscribedRadius(a) {
-    return DodecahedronConstants.CIRCUMSCRIBED_RADIUS_COEFFICIENT * a;
-}
-
-/**
- * Вычисляет радиус вписанной сферы додекаэдра
- * @param {number} a - длина ребра
- * @return {number} радиус вписанной сферы
- */
-function calculateInscribedRadius(a) {
-    return DodecahedronConstants.INSCRIBED_RADIUS_COEFFICIENT * a;
-}
-
-// Функция для инициализации всех компонентов на странице
-function initComponents() {
-    initSplashScreen();
-    
-    // Инициализируем хедер, скрывающийся при скролле
-    initScrollHeader();
-    
-    // Инициализируем плавную прокрутку для якорных ссылок
-    initSmoothScroll();
-    
-    // Инициализируем MathJax для формул (если доступен)
-    if (typeof MathJax !== 'undefined') {
-        MathJax.typeset();
-    }
-    
-    // Инициализируем переключение темы
-    initThemeToggle();
-    
-    // Инициализируем переключение языка
-    initLanguageToggle();
-    
-    // Если мы находимся на главной странице (проверяем наличие 3D модели)
-    if (document.getElementById('dodecahedron-model')) {
-        initThreeJS();
-        initModelControls();
-        initCalculator();
-    }
-    
-    // Если мы находимся на странице задач (проверяем наличие списка задач)
-    if (document.querySelector('.problems-list')) {
-        initProblemPage();
-    }
-}
-
-/**
- * Инициализирует сплеш-экран
- */
-function initSplashScreen() {
-    const splashScreen = document.querySelector('.splash-screen');
-    if (!splashScreen) return;
-    
-    // Показываем сплеш-экран на короткое время
-    splashScreen.style.display = 'flex';
-    
-    // Через 1.5 сек скрываем сплеш-экран
-    setTimeout(() => {
-        splashScreen.classList.add('fade-out');
-        
-        // Полностью удаляем сплеш-экран через 500мс после начала анимации
-        setTimeout(() => {
-            splashScreen.style.display = 'none';
-        }, 500);
-    }, 1500);
-}
-
-/**
- * Инициализирует плавную прокрутку для якорных ссылок
- */
-function initSmoothScroll() {
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            
-            const targetId = this.getAttribute('href');
-            if (targetId === '#') return;
-            
-            const targetElement = document.querySelector(targetId);
-            if (targetElement) {
-                targetElement.scrollIntoView({
-                    behavior: 'smooth'
-                });
-            }
-        });
-    });
-}
-
-/**
- * Инициализирует элементы управления 3D моделью
- */
-function initModelControls() {
-    // Добавляем обработчики для кнопок управления моделью
-    const rotateButton = document.getElementById('rotate-toggle');
-    const wireframeButton = document.getElementById('wireframe-toggle');
-    const colorInput = document.getElementById('model-color');
-    
-    if (rotateButton) {
-        rotateButton.addEventListener('click', toggleRotation);
-        // Устанавливаем начальное состояние кнопки вращения
-        if (isRotating) {
-            rotateButton.classList.add('active');
-        }
-    }
-    
-    if (wireframeButton) {
-        wireframeButton.addEventListener('click', toggleWireframe);
-    }
-    
-    if (colorInput) {
-        colorInput.addEventListener('input', changeModelColor);
-    }
-}
-
-/**
- * Инициализирует калькулятор свойств додекаэдра
- */
-function initCalculator() {
-    const calculateButton = document.getElementById('calculate-btn');
-    if (calculateButton) {
-        calculateButton.addEventListener('click', calculateProperties);
-    }
-    
-    // Добавляем обработчики для чекбоксов параметров
-    document.querySelectorAll('.parameter-checkbox').forEach(checkbox => {
-        checkbox.addEventListener('change', handleParameterCheckboxChange);
-        
-        // Инициализируем начальное состояние
-        const event = new Event('change');
-        checkbox.dispatchEvent(event);
-    });
-    
-    // Устанавливаем начальные значения полей ввода на основе длины ребра = 1
-    const edgeLength = 1;
-    document.getElementById('volume-value').value = calculateVolume(edgeLength).toFixed(2);
-    document.getElementById('surface-value').value = calculateSurfaceArea(edgeLength).toFixed(2);
-    document.getElementById('circumscribed-value').value = calculateCircumscribedRadius(edgeLength).toFixed(2);
-    document.getElementById('inscribed-value').value = calculateInscribedRadius(edgeLength).toFixed(2);
-} 
