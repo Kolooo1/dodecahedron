@@ -284,6 +284,7 @@ function initLanguageToggle() {
             modelLink: '3D Модель',
             historyLink: 'История',
             calculatorLink: 'Калькулятор',
+            formulasLink: 'Формулы',
             problemsLink: 'Задачи',
             logoText: 'Додекаэдр',
             
@@ -358,13 +359,38 @@ function initLanguageToggle() {
             // Модальное окно достижения
             achievementTitle: 'Вы стали Мастером Додекаэдра!',
             achievementDescription: 'Поздравляем! Вы успешно решили все задачи и продемонстрировали глубокое понимание свойств додекаэдра. Теперь вы настоящий мастер этой удивительной геометрической фигуры!',
-            achievementButton: 'Принять награду'
+            achievementButton: 'Принять награду',
+            
+            // Раздел формул
+            formulasTitle: 'Справочник формул додекаэдра',
+            basicCharacteristics: 'Основные характеристики',
+            additionalCharacteristics: 'Дополнительные характеристики',
+            derivedValues: 'Производные величины',
+            volumeFormula: 'Объем',
+            surfaceAreaFormula: 'Площадь поверхности',
+            inscribedRadiusFormula: 'Радиус вписанной сферы',
+            circumscribedRadiusFormula: 'Радиус описанной сферы',
+            dihedralAngleFormula: 'Двугранный угол',
+            centerToFaceFormula: 'Расстояние от центра до грани',
+            faceAreaFormula: 'Площадь грани (пятиугольника)',
+            faceDiagonalFormula: 'Диагональ грани',
+            edgeFromVolumeFormula: 'Длина ребра через объем',
+            edgeFromSurfaceFormula: 'Длина ребра через площадь',
+            edgeFromCircumscribedFormula: 'Длина ребра через радиус R',
+            edgeFromInscribedFormula: 'Длина ребра через радиус r',
+            whereEdge: 'где \\(a\\) - длина ребра додекаэдра',
+            whereVolume: 'где \\(V\\) - объем додекаэдра',
+            whereSurface: 'где \\(S\\) - площадь поверхности',
+            whereCircumscribed: 'где \\(R\\) - радиус описанной сферы',
+            whereInscribed: 'где \\(r\\) - радиус вписанной сферы',
+            dihedralAngleDescription: 'Угол между соседними гранями додекаэдра',
         },
         en: {
             // Navigation and header
             modelLink: '3D Model',
             historyLink: 'History',
             calculatorLink: 'Calculator',
+            formulasLink: 'Formulas',
             problemsLink: 'Problems',
             logoText: 'Dodecahedron',
             
@@ -439,7 +465,31 @@ function initLanguageToggle() {
             // Achievement modal
             achievementTitle: 'You are now a Dodecahedron Master!',
             achievementDescription: 'Congratulations! You have successfully solved all problems and demonstrated a deep understanding of dodecahedron properties. You are now a true master of this amazing geometric figure!',
-            achievementButton: 'Accept reward'
+            achievementButton: 'Accept reward',
+            
+            // Formulas section
+            formulasTitle: 'Dodecahedron Formulas Reference',
+            basicCharacteristics: 'Basic Characteristics',
+            additionalCharacteristics: 'Additional Characteristics',
+            derivedValues: 'Derived Values',
+            volumeFormula: 'Volume',
+            surfaceAreaFormula: 'Surface Area',
+            inscribedRadiusFormula: 'Inscribed Sphere Radius',
+            circumscribedRadiusFormula: 'Circumscribed Sphere Radius',
+            dihedralAngleFormula: 'Dihedral Angle',
+            centerToFaceFormula: 'Distance from Center to Face',
+            faceAreaFormula: 'Face Area (Pentagon)',
+            faceDiagonalFormula: 'Face Diagonal',
+            edgeFromVolumeFormula: 'Edge Length from Volume',
+            edgeFromSurfaceFormula: 'Edge Length from Surface Area',
+            edgeFromCircumscribedFormula: 'Edge Length from Radius R',
+            edgeFromInscribedFormula: 'Edge Length from Radius r',
+            whereEdge: 'where \\(a\\) is the edge length of the dodecahedron',
+            whereVolume: 'where \\(V\\) is the volume of the dodecahedron',
+            whereSurface: 'where \\(S\\) is the surface area',
+            whereCircumscribed: 'where \\(R\\) is the circumscribed sphere radius',
+            whereInscribed: 'where \\(r\\) is the inscribed sphere radius',
+            dihedralAngleDescription: 'Angle between adjacent faces of the dodecahedron',
         }
     };
     
@@ -476,8 +526,11 @@ function initLanguageToggle() {
             // Раздел с калькулятором
             navigationItems[2].textContent = translations[language].calculatorLink;
             
+            // Раздел с формулами
+            navigationItems[3].textContent = translations[language].formulasLink;
+            
             // Раздел с задачами
-            navigationItems[3].textContent = translations[language].problemsLink;
+            navigationItems[4].textContent = translations[language].problemsLink;
         }
         
         // === ГЛАВНАЯ СТРАНИЦА ===
