@@ -578,43 +578,86 @@ function initLanguageToggle() {
     
     // Функция для перевода страницы
     function translatePage(language) {
+        // Включаем режим отладки для поиска проблем с переводом
+        const debugMode = true;
+        
         // Устанавливаем язык и сохраняем его в хранилище
         currentLanguage = language;
         localStorage.setItem('language', language);
         
         // Обновляем текст кнопки переключателя языка
         const languageButton = document.getElementById('language-switch');
-        languageButton.textContent = language === 'ru' ? 'EN' : 'RU';
+        if (languageButton) {
+            languageButton.textContent = language === 'ru' ? 'EN' : 'RU';
+        } else if (debugMode) {
+            console.error('Элемент переключения языка не найден!');
+        }
         
         // Обновляем логотип
         const logoText = document.querySelector('.logo span');
         if (logoText) {
             logoText.textContent = translations[language].logoText;
+        } else if (debugMode) {
+            console.error('Элемент логотипа не найден!');
         }
         
         // Получаем все элементы, которые требуют перевода
         // === НАВИГАЦИЯ ===
-        const navigationItems = document.querySelectorAll('nav ul li a');
+        if (debugMode) console.log('Начинаем перевод навигации...');
         
-        if (navigationItems.length > 0) {
-            // Раздел с 3D моделью
-            navigationItems[0].textContent = translations[language].modelLink;
+        // Перевод основной навигации (в шапке)
+        const headerNav = document.querySelector('header nav');
+        if (headerNav) {
+            const navigationItems = headerNav.querySelectorAll('ul li a');
+            if (debugMode) console.log('Найдено элементов навигации в шапке:', navigationItems.length);
             
-            // Раздел с историей
-            navigationItems[1].textContent = translations[language].historyLink;
-            
-            // Раздел с калькулятором
-            navigationItems[2].textContent = translations[language].calculatorLink;
-            
-            // Раздел с формулами
-            navigationItems[3].textContent = translations[language].formulasLink;
-            
-            // Раздел с мемами
-            navigationItems[4].textContent = translations[language].memesLink;
-            
-            // Раздел с задачами
-            navigationItems[5].textContent = translations[language].problemsLink;
+            // Переводим каждый элемент навигации
+            navigationItems.forEach(navItem => {
+                const href = navItem.getAttribute('href');
+                if (debugMode) console.log(`Обрабатываем элемент с href=${href}`);
+                
+                if (href === "#model" || href.includes("model")) {
+                    navItem.textContent = translations[language].modelLink;
+                } else if (href === "#history" || href.includes("history")) {
+                    navItem.textContent = translations[language].historyLink;
+                } else if (href === "#calculator" || href.includes("calculator")) {
+                    navItem.textContent = translations[language].calculatorLink;
+                } else if (href === "#formulas" || href.includes("formulas")) {
+                    navItem.textContent = translations[language].formulasLink;
+                } else if (href === "#memes" || href.includes("memes")) {
+                    navItem.textContent = translations[language].memesLink;
+                } else if (href === "problems.html" || href.includes("problems")) {
+                    navItem.textContent = translations[language].problemsLink;
+                }
+            });
+        } else if (debugMode) {
+            console.error('Навигация в шапке не найдена!');
         }
+        
+        // Переводим заголовки всех разделов
+        const sections = document.querySelectorAll('section[id]');
+        if (debugMode) console.log('Найдено секций для перевода:', sections.length);
+        
+        sections.forEach(section => {
+            const id = section.getAttribute('id');
+            const sectionTitle = section.querySelector('h2');
+            
+            if (sectionTitle) {
+                if (debugMode) console.log(`Обрабатываем заголовок секции с id=${id}`);
+                
+                if (id === 'model') {
+                    sectionTitle.textContent = translations[language].modelTitle;
+                } else if (id === 'history') {
+                    sectionTitle.textContent = translations[language].historyTitle;
+                } else if (id === 'calculator') {
+                    sectionTitle.textContent = translations[language].calculatorTitle;
+                } else if (id === 'formulas') {
+                    sectionTitle.textContent = translations[language].formulasTitle;
+                } else if (id === 'memes') {
+                    sectionTitle.textContent = translations[language].memesTitle;
+                }
+            }
+        });
         
         // === ГЛАВНАЯ СТРАНИЦА ===
         // Проверяем, находимся ли мы на главной странице (наличие hero раздела)
@@ -694,23 +737,55 @@ function initLanguageToggle() {
                 if (calculatorTitle) calculatorTitle.textContent = translations[language].calculatorTitle;
                 if (parametersText) parametersText.textContent = translations[language].parametersTitle;
                 
+                // Полностью переписываем метки параметров
                 if (labels.length >= 5) {
-                    // Получаем тексты без чекбоксов
-                    const edgeLabel = labels[0].childNodes[1].textContent.trim();
-                    labels[0].childNodes[1].textContent = ' ' + translations[language].edgeLabel;
+                    // Находим все метки параметров и заменяем текст полностью
+                    const edgeLabel = labels[0];
+                    const volumeLabel = labels[1];
+                    const surfaceLabel = labels[2];
+                    const circumscribedLabel = labels[3];
+                    const inscribedLabel = labels[4];
                     
-                    const volumeLabel = labels[1].childNodes[1].textContent.trim();
-                    labels[1].childNodes[1].textContent = ' ' + translations[language].volumeLabel;
+                    // Сохраняем чекбоксы, чтобы их не потерять при замене текста
+                    const edgeCheckbox = edgeLabel.querySelector('input[type="checkbox"]');
+                    const volumeCheckbox = volumeLabel.querySelector('input[type="checkbox"]');
+                    const surfaceCheckbox = surfaceLabel.querySelector('input[type="checkbox"]');
+                    const circumscribedCheckbox = circumscribedLabel.querySelector('input[type="checkbox"]');
+                    const inscribedCheckbox = inscribedLabel.querySelector('input[type="checkbox"]');
                     
-                    const surfaceLabel = labels[2].childNodes[1].textContent.trim();
-                    labels[2].childNodes[1].textContent = ' ' + translations[language].surfaceLabel;
+                    // Очищаем и перестраиваем содержимое меток
+                    edgeLabel.innerHTML = '';
+                    edgeLabel.appendChild(edgeCheckbox);
+                    edgeLabel.appendChild(document.createTextNode(' ' + translations[language].edgeLabel));
                     
-                    const circumscribedLabel = labels[3].childNodes[1].textContent.trim();
-                    labels[3].childNodes[1].textContent = ' ' + translations[language].circumscribedLabel;
+                    volumeLabel.innerHTML = '';
+                    volumeLabel.appendChild(volumeCheckbox);
+                    volumeLabel.appendChild(document.createTextNode(' ' + translations[language].volumeLabel));
                     
-                    const inscribedLabel = labels[4].childNodes[1].textContent.trim();
-                    labels[4].childNodes[1].textContent = ' ' + translations[language].inscribedLabel;
+                    surfaceLabel.innerHTML = '';
+                    surfaceLabel.appendChild(surfaceCheckbox);
+                    surfaceLabel.appendChild(document.createTextNode(' ' + translations[language].surfaceLabel));
+                    
+                    circumscribedLabel.innerHTML = '';
+                    circumscribedLabel.appendChild(circumscribedCheckbox);
+                    circumscribedLabel.appendChild(document.createTextNode(' ' + translations[language].circumscribedLabel));
+                    
+                    inscribedLabel.innerHTML = '';
+                    inscribedLabel.appendChild(inscribedCheckbox);
+                    inscribedLabel.appendChild(document.createTextNode(' ' + translations[language].inscribedLabel));
                 }
+                
+                // Переводим единицы измерения
+                const unitElements = calculatorSection.querySelectorAll('.unit');
+                unitElements.forEach(unit => {
+                    if (unit.textContent === 'см' || unit.textContent === 'cm') {
+                        unit.textContent = language === 'ru' ? 'см' : 'cm';
+                    } else if (unit.textContent === 'см²' || unit.textContent === 'cm²') {
+                        unit.textContent = language === 'ru' ? 'см²' : 'cm²';
+                    } else if (unit.textContent === 'см³' || unit.textContent === 'cm³') {
+                        unit.textContent = language === 'ru' ? 'см³' : 'cm³';
+                    }
+                });
                 
                 if (calculateButton) calculateButton.textContent = translations[language].calculateButton;
                 if (resultsTitle) resultsTitle.textContent = translations[language].resultsTitle;
@@ -722,6 +797,34 @@ function initLanguageToggle() {
                     resultTitles[3].textContent = translations[language].circumscribedResult;
                     resultTitles[4].textContent = translations[language].inscribedResult;
                 }
+                
+                // Переводим единицы измерения в результатах
+                const resultValues = calculatorSection.querySelectorAll('.result-value');
+                resultValues.forEach(value => {
+                    // Извлекаем числовое значение и единицу измерения
+                    const text = value.textContent;
+                    const match = text.match(/^([\d.]+)\s*(см|см²|см³|cm|cm²|cm³)$/);
+                    
+                    if (match) {
+                        const number = match[1];
+                        const unit = match[2];
+                        
+                        // Определяем соответствующую единицу измерения для текущего языка
+                        let newUnit;
+                        if (unit === 'см' || unit === 'cm') {
+                            newUnit = language === 'ru' ? 'см' : 'cm';
+                        } else if (unit === 'см²' || unit === 'cm²') {
+                            newUnit = language === 'ru' ? 'см²' : 'cm²';
+                        } else if (unit === 'см³' || unit === 'cm³') {
+                            newUnit = language === 'ru' ? 'см³' : 'cm³';
+                        } else {
+                            newUnit = unit; // Если единица не распознана, оставляем как есть
+                        }
+                        
+                        // Обновляем текст с новой единицей измерения
+                        value.textContent = `${number} ${newUnit}`;
+                    }
+                });
                 
                 // Обновляем сообщения калькулятора
                 window.calculatorMessages = {
@@ -849,6 +952,25 @@ function initLanguageToggle() {
                 resourceLinks[0].textContent = translations[language].wikipediaLink;
                 resourceLinks[1].textContent = translations[language].mathworldLink;
             }
+            
+            // Добавляем перевод для ссылок навигации в футере
+            const footerNavLinks = footer.querySelectorAll('.footer-section:nth-child(2) ul li a');
+            footerNavLinks.forEach(link => {
+                const href = link.getAttribute('href');
+                if (href === "#model" || href.includes("model")) {
+                    link.textContent = translations[language].modelLink;
+                } else if (href === "#history" || href.includes("history")) {
+                    link.textContent = translations[language].historyLink;
+                } else if (href === "#calculator" || href.includes("calculator")) {
+                    link.textContent = translations[language].calculatorLink;
+                } else if (href === "#formulas" || href.includes("formulas")) {
+                    link.textContent = translations[language].formulasLink;
+                } else if (href === "#memes" || href.includes("memes")) {
+                    link.textContent = translations[language].memesLink;
+                } else if (href === "problems.html" || href.includes("problems")) {
+                    link.textContent = translations[language].problemsLink;
+                }
+            });
         }
 
         // Страница задач (problems.html)
